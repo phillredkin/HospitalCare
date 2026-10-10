@@ -1,0 +1,29 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# .NET
+**/bin/
+**/obj/
+.vs/
+*.user
+
+# Node.js
+**/node_modules/
+**/dist/
+**/coverage/
+
+# Python
+**/__pycache__/
+**/.venv/
+*.pyc
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
