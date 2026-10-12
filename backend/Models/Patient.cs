@@ -1,3 +1,4 @@
+
 namespace HospitalCare.Web.Models;
 
 public class Patient
@@ -15,4 +16,7 @@ public class Patient
     public string DiabetesType { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<Hospitalization> Hospitalizations { get; set; }
+        = new List<Hospitalization>();
 }
