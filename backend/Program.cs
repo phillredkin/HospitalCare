@@ -35,6 +35,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 var app = builder.Build();
 
+
 // HTTP pipeline
 if (!app.Environment.IsDevelopment())
 {
