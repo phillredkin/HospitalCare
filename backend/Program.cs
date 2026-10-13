@@ -1,4 +1,21 @@
+//
+using HospitalCare.Web.Data;
+using Microsoft.EntityFrameworkCore;
+//
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+//
+var connectionString = builder.Configuration
+    .GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+//
+
+
 
 // ASP.NET Core MVC
 builder.Services.AddControllersWithViews();
@@ -17,6 +34,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 var app = builder.Build();
+
 
 // HTTP pipeline
 if (!app.Environment.IsDevelopment())
