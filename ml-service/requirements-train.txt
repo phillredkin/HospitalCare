@@ -1,0 +1,3 @@
+# Training = service dependencies + plotting
+-r requirements.txt
+matplotlib==3.11.2
