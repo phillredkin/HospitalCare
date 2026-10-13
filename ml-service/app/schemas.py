@@ -1,0 +1,146 @@
+"""API request/response schemas and mapping of API fields (snake_case) to dataset fields."""
+from typing import Literal
+from uuid import UUID
+
+from pydantic import BaseModel, Field
+
+MedStatus = Literal["no", "steady", "up", "down"]
+ICD9_PATTERN = r"^(\d{1,3}(\.\d{1,2})?|V\d{1,2}(\.\d{1,2})?|E\d{3}(\.\d{1,2})?)$"
+
+MED_VALUES = {"no": "No", "steady": "Steady", "up": "Up", "down": "Down"}
+LAB_VALUES = {"none": "None", "norm": "Norm"}
+# Fields whose API name differs from the dataset name
+DATASET_TO_API = {
+    "A1Cresult": "a1c_result",
+    "diabetesMed": "diabetes_med",
+    "glyburide-metformin": "medications.glyburide_metformin",
+}
+
+
+class Medications(BaseModel):
+    """Diabetic medication during the stay: no / steady / up (dose increased) / down (dose decreased)."""
+
+    metformin: MedStatus = "no"
+    repaglinide: MedStatus = "no"
+    nateglinide: MedStatus = "no"
+    glimepiride: MedStatus = "no"
+    glipizide: MedStatus = "no"
+    glyburide: MedStatus = "no"
+    pioglitazone: MedStatus = "no"
+    rosiglitazone: MedStatus = "no"
+    acarbose: MedStatus = "no"
+    insulin: MedStatus = "no"
+    glyburide_metformin: MedStatus = "no"
+
+
+class Hospitalization(BaseModel):
+    age: int = Field(ge=0, le=120, description="Age in years")
+    gender: Literal["female", "male"]
+    admission_type_id: int = Field(ge=1, description="Code from IDs_mapping.csv")
+    discharge_disposition_id: int = Field(ge=1, description="Code from IDs_mapping.csv")
+    admission_source_id: int = Field(ge=1, description="Code from IDs_mapping.csv")
+    medical_specialty: str | None = Field(
+        default=None, description="E.g. InternalMedicine, Cardiology; full list in GET /model-info")
+    time_in_hospital: int = Field(ge=0, description="Length of stay, days (model supports 1-14)")
+    num_lab_procedures: int = Field(ge=0)
+    num_procedures: int = Field(ge=0)
+    num_medications: int = Field(ge=0)
+    number_outpatient: int = Field(ge=0, description="Outpatient visits in the year before admission")
+    number_emergency: int = Field(ge=0, description="Emergency visits in the year before admission")
+    number_inpatient: int = Field(ge=0, description="Hospitalizations in the year before admission")
+    number_diagnoses: int = Field(ge=0)
+    diag_1: str = Field(pattern=ICD9_PATTERN, description="Primary diagnosis, ICD-9 code (e.g. 428, 250.02, V57)")
+    diag_2: str | None = Field(default=None, pattern=ICD9_PATTERN)
+    diag_3: str | None = Field(default=None, pattern=ICD9_PATTERN)
+    max_glu_serum: Literal["none", "norm", ">200", ">300"] = Field(default="none", description="none = not measured")
+    a1c_result: Literal["none", "norm", ">7", ">8"] = Field(default="none", description="none = not measured")
+    medications: Medications = Field(default_factory=Medications)
+    change: bool | None = Field(
+        default=None, description="Diabetic medication changed; if omitted, derived from medications")
+    diabetes_med: bool | None = Field(
+        default=None, description="Any diabetic medication prescribed; if omitted, derived from medications")
+
+    def _flags(self):
+        """change / diabetes_med: derived from medications when not provided."""
+        meds = self.medications.model_dump().values()
+        change = self.change if self.change is not None else any(v in ("up", "down") for v in meds)
+        diabetes_med = self.diabetes_med if self.diabetes_med is not None else any(v != "no" for v in meds)
+        return change, diabetes_med
+
+    def to_model_record(self):
+        """API fields -> dict with dataset field names and values (INPUT_COLUMNS)."""
+        meds = {name.replace("_", "-"): MED_VALUES[v] for name, v in self.medications.model_dump().items()}
+        change, diabetes_med = self._flags()
+        record = self.model_dump(exclude={"medications", "change", "diabetes_med", "a1c_result", "max_glu_serum"})
+        record.update(meds)
+        record.update({
+            "gender": self.gender.capitalize(),
+            "max_glu_serum": LAB_VALUES.get(self.max_glu_serum, self.max_glu_serum),
+            "A1Cresult": LAB_VALUES.get(self.a1c_result, self.a1c_result),
+            "change": "Ch" if change else "No",
+            "diabetesMed": "Yes" if diabetes_med else "No",
+        })
+        return record
+
+    def flat_values(self):
+        """Values as sent by the client, keyed by API field name: {'medications.insulin': 'up', ...}."""
+        values = self.model_dump(exclude={"medications"})
+        values.update({f"medications.{k}": v for k, v in self.medications.model_dump().items()})
+        values["change"], values["diabetes_med"] = self._flags()
+        return values
+
+
+def api_field_name(dataset_field):
+    if dataset_field in DATASET_TO_API:
+        return DATASET_TO_API[dataset_field]
+    if dataset_field in Medications.model_fields:
+        return f"medications.{dataset_field}"
+    return dataset_field
+
+
+class PredictRequest(BaseModel):
+    request_id: UUID = Field(description="Generated by the caller, returned unchanged")
+    hospitalization: Hospitalization
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [{
+                "request_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "hospitalization": {
+                    "age": 75, "gender": "female",
+                    "admission_type_id": 1, "discharge_disposition_id": 1, "admission_source_id": 7,
+                    "medical_specialty": "InternalMedicine",
+                    "time_in_hospital": 6, "num_lab_procedures": 52, "num_procedures": 1, "num_medications": 21,
+                    "number_outpatient": 1, "number_emergency": 2, "number_inpatient": 3, "number_diagnoses": 9,
+                    "diag_1": "428", "diag_2": "250.02", "diag_3": "403",
+                    "max_glu_serum": "none", "a1c_result": ">8",
+                    "medications": {"insulin": "up"},
+                    "change": True, "diabetes_med": True,
+                },
+            }],
+        },
+    }
+
+
+class Factor(BaseModel):
+    field: str = Field(description="API field name")
+    label: str = Field(description="Human-readable field label")
+    value: str | int | bool | None = Field(description="Value as sent in the request")
+    impact: float = Field(description="How much this field raises the probability vs. a typical patient")
+
+
+class Reason(BaseModel):
+    field: str
+    code: Literal["excluded_discharge", "unknown_code", "out_of_range"]
+    message: str = Field(description="Human-readable message")
+
+
+class PredictResponse(BaseModel):
+    request_id: UUID
+    prediction_id: UUID
+    model_version: str
+    status: Literal["ok", "unsupported"] = Field(description="unsupported = input is outside the model's range")
+    probability: float | None = Field(description="Probability of readmission within 30 days; null if unsupported")
+    risk_level: Literal["low", "medium", "high"] | None
+    top_factors: list[Factor] = Field(description="Up to 3 fields that raise the risk most")
+    reasons: list[Reason] = Field(description="Why there is no prediction (only when status = unsupported)")

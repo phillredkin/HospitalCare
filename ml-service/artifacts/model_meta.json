@@ -1,0 +1,284 @@
+{
+  "model_version": "readmission-20261013-0622",
+  "trained_at": "2026-10-13T06:22:41+00:00",
+  "sklearn_version": "1.9.1",
+  "target": "readmitted == '<30'",
+  "input_columns": [
+    "age",
+    "gender",
+    "admission_type_id",
+    "discharge_disposition_id",
+    "admission_source_id",
+    "medical_specialty",
+    "time_in_hospital",
+    "num_lab_procedures",
+    "num_procedures",
+    "num_medications",
+    "number_outpatient",
+    "number_emergency",
+    "number_inpatient",
+    "number_diagnoses",
+    "diag_1",
+    "diag_2",
+    "diag_3",
+    "max_glu_serum",
+    "A1Cresult",
+    "metformin",
+    "repaglinide",
+    "nateglinide",
+    "glimepiride",
+    "glipizide",
+    "glyburide",
+    "pioglitazone",
+    "rosiglitazone",
+    "acarbose",
+    "insulin",
+    "glyburide-metformin",
+    "change",
+    "diabetesMed"
+  ],
+  "excluded_discharge_ids": [
+    11,
+    13,
+    14,
+    19,
+    20,
+    21
+  ],
+  "thresholds": {
+    "medium": 0.11,
+    "high": 0.23
+  },
+  "domain": {
+    "numeric_ranges": {
+      "time_in_hospital": [
+        1,
+        14
+      ],
+      "num_lab_procedures": [
+        1,
+        132
+      ],
+      "num_procedures": [
+        0,
+        6
+      ],
+      "num_medications": [
+        1,
+        81
+      ],
+      "number_outpatient": [
+        0,
+        42
+      ],
+      "number_emergency": [
+        0,
+        76
+      ],
+      "number_inpatient": [
+        0,
+        21
+      ],
+      "number_diagnoses": [
+        1,
+        16
+      ]
+    },
+    "known_codes": {
+      "admission_type_id": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "discharge_disposition_id": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        15,
+        16,
+        17,
+        18,
+        22,
+        23,
+        24,
+        25,
+        27,
+        28
+      ],
+      "admission_source_id": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        13,
+        14,
+        17,
+        20,
+        22,
+        25
+      ]
+    },
+    "known_specialties": [
+      "AllergyandImmunology",
+      "Anesthesiology",
+      "Anesthesiology-Pediatric",
+      "Cardiology",
+      "Cardiology-Pediatric",
+      "DCPTEAM",
+      "Dentistry",
+      "Dermatology",
+      "Emergency/Trauma",
+      "Endocrinology",
+      "Endocrinology-Metabolism",
+      "Family/GeneralPractice",
+      "Gastroenterology",
+      "Gynecology",
+      "Hematology",
+      "Hematology/Oncology",
+      "Hospitalist",
+      "InfectiousDiseases",
+      "InternalMedicine",
+      "Nephrology",
+      "Neurology",
+      "Neurophysiology",
+      "Obsterics&Gynecology-GynecologicOnco",
+      "Obstetrics",
+      "ObstetricsandGynecology",
+      "Oncology",
+      "Ophthalmology",
+      "Orthopedics",
+      "Orthopedics-Reconstructive",
+      "Osteopath",
+      "Otolaryngology",
+      "OutreachServices",
+      "Pathology",
+      "Pediatrics",
+      "Pediatrics-AllergyandImmunology",
+      "Pediatrics-CriticalCare",
+      "Pediatrics-EmergencyMedicine",
+      "Pediatrics-Endocrinology",
+      "Pediatrics-Hematology-Oncology",
+      "Pediatrics-InfectiousDiseases",
+      "Pediatrics-Neurology",
+      "Pediatrics-Pulmonology",
+      "PhysicalMedicineandRehabilitation",
+      "PhysicianNotFound",
+      "Podiatry",
+      "Proctology",
+      "Psychiatry",
+      "Psychiatry-Addictive",
+      "Psychiatry-Child/Adolescent",
+      "Psychology",
+      "Pulmonology",
+      "Radiologist",
+      "Radiology",
+      "Resident",
+      "Rheumatology",
+      "Surgeon",
+      "Surgery-Cardiovascular",
+      "Surgery-Cardiovascular/Thoracic",
+      "Surgery-Colon&Rectal",
+      "Surgery-General",
+      "Surgery-Maxillofacial",
+      "Surgery-Neuro",
+      "Surgery-Pediatric",
+      "Surgery-Plastic",
+      "Surgery-PlasticwithinHeadandNeck",
+      "Surgery-Thoracic",
+      "Surgery-Vascular",
+      "SurgicalSpecialty",
+      "Urology"
+    ],
+    "max_age": 99
+  },
+  "n_train": 79567,
+  "n_test": 19773,
+  "cv_roc_auc": {
+    "hist_gradient_boosting": 0.6702,
+    "logistic_regression": 0.6618
+  },
+  "best_params": {
+    "model__min_samples_leaf": 100,
+    "model__max_leaf_nodes": 31,
+    "model__learning_rate": 0.03,
+    "model__l2_regularization": 1.0
+  },
+  "test_metrics": {
+    "hist_gradient_boosting": {
+      "roc_auc": 0.6762,
+      "pr_auc": 0.2415,
+      "brier": 0.0951,
+      "base_rate": 0.1135,
+      "top10pct_rate": 0.2863,
+      "precision_at_medium": 0.1738,
+      "recall_at_medium": 0.6132,
+      "precision_at_high": 0.3309,
+      "recall_at_high": 0.1823
+    },
+    "logistic_regression": {
+      "roc_auc": 0.6745,
+      "pr_auc": 0.2218,
+      "brier": 0.0959,
+      "base_rate": 0.1135,
+      "top10pct_rate": 0.2656,
+      "precision_at_medium": 0.1801,
+      "recall_at_medium": 0.5931,
+      "precision_at_high": 0.2847,
+      "recall_at_high": 0.1783
+    }
+  },
+  "test_risk_levels": {
+    "low": {
+      "count": 11855,
+      "share": 0.5996,
+      "readmitted_rate": 0.0732
+    },
+    "medium": {
+      "count": 6682,
+      "share": 0.3379,
+      "readmitted_rate": 0.1447
+    },
+    "high": {
+      "count": 1236,
+      "share": 0.0625,
+      "readmitted_rate": 0.3309
+    }
+  },
+  "permutation_importance_top15": {
+    "number_inpatient": 0.0692,
+    "discharge_disposition_id": 0.0529,
+    "diag_1": 0.014,
+    "medical_specialty": 0.0071,
+    "number_diagnoses": 0.0024,
+    "diag_2": 0.0024,
+    "number_emergency": 0.0021,
+    "age": 0.002,
+    "time_in_hospital": 0.0017,
+    "insulin": 0.0016,
+    "diag_3": 0.0015,
+    "number_outpatient": 0.0009,
+    "admission_source_id": 0.0006,
+    "num_lab_procedures": 0.0004,
+    "glimepiride": 0.0004
+  }
+}

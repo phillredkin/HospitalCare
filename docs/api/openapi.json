@@ -1,0 +1,665 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "HospitalCare ML API",
+    "description": "Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge.\n\n- `status: ok` - prediction made.\n- `status: unsupported` - input is valid, but outside the range of the training data (e.g. stay longer than 14 days); no prediction, see `reasons`.\n- HTTP 422 - invalid input (wrong type, negative number, missing required field).",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/model-info": {
+      "get": {
+        "summary": "Model Info",
+        "description": "Risk thresholds, supported ranges and codes, test metrics.",
+        "operationId": "model_info_model_info_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/predict": {
+      "post": {
+        "summary": "Predict",
+        "operationId": "predict_predict_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Factor": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field",
+            "description": "API field name"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Human-readable field label"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value",
+            "description": "Value as sent in the request"
+          },
+          "impact": {
+            "type": "number",
+            "title": "Impact",
+            "description": "How much this field raises the probability vs. a typical patient"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "label",
+          "value",
+          "impact"
+        ],
+        "title": "Factor"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Hospitalization": {
+        "properties": {
+          "age": {
+            "type": "integer",
+            "maximum": 120.0,
+            "minimum": 0.0,
+            "title": "Age",
+            "description": "Age in years"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "female",
+              "male"
+            ],
+            "title": "Gender"
+          },
+          "admission_type_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Admission Type Id",
+            "description": "Code from IDs_mapping.csv"
+          },
+          "discharge_disposition_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Discharge Disposition Id",
+            "description": "Code from IDs_mapping.csv"
+          },
+          "admission_source_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Admission Source Id",
+            "description": "Code from IDs_mapping.csv"
+          },
+          "medical_specialty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Medical Specialty",
+            "description": "E.g. InternalMedicine, Cardiology; full list in GET /model-info"
+          },
+          "time_in_hospital": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Time In Hospital",
+            "description": "Length of stay, days (model supports 1-14)"
+          },
+          "num_lab_procedures": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Num Lab Procedures"
+          },
+          "num_procedures": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Num Procedures"
+          },
+          "num_medications": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Num Medications"
+          },
+          "number_outpatient": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Number Outpatient",
+            "description": "Outpatient visits in the year before admission"
+          },
+          "number_emergency": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Number Emergency",
+            "description": "Emergency visits in the year before admission"
+          },
+          "number_inpatient": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Number Inpatient",
+            "description": "Hospitalizations in the year before admission"
+          },
+          "number_diagnoses": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Number Diagnoses"
+          },
+          "diag_1": {
+            "type": "string",
+            "pattern": "^(\\d{1,3}(\\.\\d{1,2})?|V\\d{1,2}(\\.\\d{1,2})?|E\\d{3}(\\.\\d{1,2})?)$",
+            "title": "Diag 1",
+            "description": "Primary diagnosis, ICD-9 code (e.g. 428, 250.02, V57)"
+          },
+          "diag_2": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(\\d{1,3}(\\.\\d{1,2})?|V\\d{1,2}(\\.\\d{1,2})?|E\\d{3}(\\.\\d{1,2})?)$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diag 2"
+          },
+          "diag_3": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(\\d{1,3}(\\.\\d{1,2})?|V\\d{1,2}(\\.\\d{1,2})?|E\\d{3}(\\.\\d{1,2})?)$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diag 3"
+          },
+          "max_glu_serum": {
+            "type": "string",
+            "enum": [
+              "none",
+              "norm",
+              ">200",
+              ">300"
+            ],
+            "title": "Max Glu Serum",
+            "description": "none = not measured",
+            "default": "none"
+          },
+          "a1c_result": {
+            "type": "string",
+            "enum": [
+              "none",
+              "norm",
+              ">7",
+              ">8"
+            ],
+            "title": "A1C Result",
+            "description": "none = not measured",
+            "default": "none"
+          },
+          "medications": {
+            "$ref": "#/components/schemas/Medications"
+          },
+          "change": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change",
+            "description": "Diabetic medication changed; if omitted, derived from medications"
+          },
+          "diabetes_med": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diabetes Med",
+            "description": "Any diabetic medication prescribed; if omitted, derived from medications"
+          }
+        },
+        "type": "object",
+        "required": [
+          "age",
+          "gender",
+          "admission_type_id",
+          "discharge_disposition_id",
+          "admission_source_id",
+          "time_in_hospital",
+          "num_lab_procedures",
+          "num_procedures",
+          "num_medications",
+          "number_outpatient",
+          "number_emergency",
+          "number_inpatient",
+          "number_diagnoses",
+          "diag_1"
+        ],
+        "title": "Hospitalization"
+      },
+      "Medications": {
+        "properties": {
+          "metformin": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Metformin",
+            "default": "no"
+          },
+          "repaglinide": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Repaglinide",
+            "default": "no"
+          },
+          "nateglinide": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Nateglinide",
+            "default": "no"
+          },
+          "glimepiride": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Glimepiride",
+            "default": "no"
+          },
+          "glipizide": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Glipizide",
+            "default": "no"
+          },
+          "glyburide": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Glyburide",
+            "default": "no"
+          },
+          "pioglitazone": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Pioglitazone",
+            "default": "no"
+          },
+          "rosiglitazone": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Rosiglitazone",
+            "default": "no"
+          },
+          "acarbose": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Acarbose",
+            "default": "no"
+          },
+          "insulin": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Insulin",
+            "default": "no"
+          },
+          "glyburide_metformin": {
+            "type": "string",
+            "enum": [
+              "no",
+              "steady",
+              "up",
+              "down"
+            ],
+            "title": "Glyburide Metformin",
+            "default": "no"
+          }
+        },
+        "type": "object",
+        "title": "Medications",
+        "description": "Diabetic medication during the stay: no / steady / up (dose increased) / down (dose decreased)."
+      },
+      "PredictRequest": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id",
+            "description": "Generated by the caller, returned unchanged"
+          },
+          "hospitalization": {
+            "$ref": "#/components/schemas/Hospitalization"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "hospitalization"
+        ],
+        "title": "PredictRequest",
+        "examples": [
+          {
+            "hospitalization": {
+              "a1c_result": ">8",
+              "admission_source_id": 7,
+              "admission_type_id": 1,
+              "age": 75,
+              "change": true,
+              "diabetes_med": true,
+              "diag_1": "428",
+              "diag_2": "250.02",
+              "diag_3": "403",
+              "discharge_disposition_id": 1,
+              "gender": "female",
+              "max_glu_serum": "none",
+              "medical_specialty": "InternalMedicine",
+              "medications": {
+                "insulin": "up"
+              },
+              "num_lab_procedures": 52,
+              "num_medications": 21,
+              "num_procedures": 1,
+              "number_diagnoses": 9,
+              "number_emergency": 2,
+              "number_inpatient": 3,
+              "number_outpatient": 1,
+              "time_in_hospital": 6
+            },
+            "request_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          }
+        ]
+      },
+      "PredictResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "prediction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Prediction Id"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "unsupported"
+            ],
+            "title": "Status",
+            "description": "unsupported = input is outside the model's range"
+          },
+          "probability": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Probability",
+            "description": "Probability of readmission within 30 days; null if unsupported"
+          },
+          "risk_level": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Risk Level"
+          },
+          "top_factors": {
+            "items": {
+              "$ref": "#/components/schemas/Factor"
+            },
+            "type": "array",
+            "title": "Top Factors",
+            "description": "Up to 3 fields that raise the risk most"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/Reason"
+            },
+            "type": "array",
+            "title": "Reasons",
+            "description": "Why there is no prediction (only when status = unsupported)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "prediction_id",
+          "model_version",
+          "status",
+          "probability",
+          "risk_level",
+          "top_factors",
+          "reasons"
+        ],
+        "title": "PredictResponse"
+      },
+      "Reason": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "excluded_discharge",
+              "unknown_code",
+              "out_of_range"
+            ],
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "code",
+          "message"
+        ],
+        "title": "Reason"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
