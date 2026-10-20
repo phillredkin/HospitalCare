@@ -94,6 +94,9 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<SessionService>();
 //
 
+//
+builder.Services.AddScoped<UserService>();
+//
 
 //
 
