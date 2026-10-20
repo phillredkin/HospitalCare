@@ -107,6 +107,10 @@ builder.Services.AddScoped<HospitalizationService>();
 //
 
 //
+builder.Services.AddScoped<MedicationService>();
+//
+
+//
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode =
