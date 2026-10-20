@@ -72,4 +72,41 @@ public class UsersController : ControllerBase
         }
     }
 
+
+    // PATCH /api/users/{id}
+    [HttpPatch("{id:int}")]
+    public async Task<ActionResult<UserResponseDto>> Update(
+        int id,
+        [FromBody] UpdateUserRequestDto request,
+        [FromHeader(Name = "X-CSRF-TOKEN")] string csrfToken)
+    {
+        // The antiforgery filter validates this header before the action executes.
+        _ = csrfToken;
+
+        try
+        {
+            var user = await _userService.UpdateAsync(id, request);
+
+            if (user == null)
+            {
+                return NotFound(new
+                {
+                    message = $"Користувача з ID {id} не знайдено."
+                });
+            }
+
+            return Ok(user);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+    }
+
+
+
 }

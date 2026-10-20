@@ -6,10 +6,12 @@ namespace HospitalCare.Web.Dtos;
 public class CreateUserRequestDto
 {
     [Required]
+    [MaxLength(150)]
     public string Name { get; set; } = string.Empty;
 
     [Required]
     [EmailAddress]
+    [MaxLength(256)]
     public string Email { get; set; } = string.Empty;
 
     [Required]
