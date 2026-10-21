@@ -30,9 +30,10 @@ public class AuthController : ControllerBase
 
     // POST /api/auth/login
     [AllowAnonymous]
+    [EnableRateLimiting("login")]
     [HttpPost("login")]
     public async Task<IActionResult> Login(
-    [FromBody] LoginRequest request,
+        [FromBody] LoginRequest request,
     [FromHeader(Name = "X-CSRF-TOKEN")] string? csrfToken = null)
     {
         var user = await _authService.ValidateCredentialsAsync(

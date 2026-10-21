@@ -1,34 +1,15 @@
-//
+
 using HospitalCare.Web.Data;
 using Microsoft.EntityFrameworkCore;
-//
-
-//
 using Microsoft.AspNetCore.Identity;
 using HospitalCare.Web.Models;
-//
-
-//
 using HospitalCare.Web.Services;
-//
-
-//
 using HospitalCare.Web.Authentication;
 using Microsoft.AspNetCore.Authentication;
-//
-
-//
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
-//
-
-//
 using Microsoft.AspNetCore.Mvc;
-//
-
-//
 using Microsoft.AspNetCore.DataProtection;
-//
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,11 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration
     .GetConnectionString("DefaultConnection");
 
+//
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-//
-
-
 
 // ASP.NET Core MVC
 builder.Services.AddControllersWithViews(options =>
@@ -55,14 +34,12 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-//
 builder.Services
     .AddAuthentication(SessionAuthenticationHandler.SchemeName)
     .AddScheme<AuthenticationSchemeOptions, SessionAuthenticationHandler>(
         SessionAuthenticationHandler.SchemeName,
-        options => { });
-//
+        options => { 
+});
 
 // Authorization
 builder.Services.AddAuthorization(options =>
@@ -82,20 +59,14 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.InstanceName = "HospitalCare:";
 });
 
-//
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-//
-
-//
 builder.Services.AddScoped<AuthService>();
-//
-
-//
 builder.Services.AddScoped<SessionService>();
-//
-
-
-//
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<PatientService>();
+builder.Services.AddScoped<HospitalizationService>();
+builder.Services.AddScoped<MedicationService>();
+builder.Services.AddScoped<ClinicalNoteService>();
 
 builder.Services.AddRateLimiter(options =>
 {
@@ -115,9 +86,7 @@ builder.Services.AddRateLimiter(options =>
                 AutoReplenishment = true
             }));
 });
-//
 
-//
 // CSRF protection
 builder.Services.AddAntiforgery(options =>
 {
@@ -129,7 +98,6 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
 });
 //
-
 
 
 //
