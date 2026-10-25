@@ -1,0 +1,26 @@
+node_modules/
+dist/
+coverage/
+test-results/
+playwright-report/
+*.tsbuildinfo
+.env.local
+.npm-cache/
+
+# Local verification, test data, runners and reports are not frontend deliverables.
+e2e/
+src/test/
+test/
+tests/
+__tests__/
+__mocks__/
+**/*.test.*
+**/*.spec.*
+vitest.config.*
+playwright*.config.*
+scripts/
+live-test-results/
+blob-report/
+.cache/
+.vite/
+*.log

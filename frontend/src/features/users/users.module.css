@@ -1,0 +1,291 @@
+.eyebrow {
+  font-size: 0.62rem;
+  font-weight: 650;
+  letter-spacing: 0.15em;
+  color: var(--teal);
+  margin-bottom: 11px;
+}
+.dot,
+.inactiveDot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #079b89;
+  flex-shrink: 0;
+}
+.inactiveDot {
+  background: #929bad;
+}
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.toggle > span:last-child {
+  position: relative;
+  width: 43px;
+  height: 24px;
+  border-radius: 16px;
+  background: #a3afbf;
+  transition: background 0.15s;
+}
+.toggle > span:last-child::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.15s;
+}
+.toggle input:checked + span {
+  background: #008e98;
+}
+.toggle input:checked + span::after {
+  transform: translateX(19px);
+}
+.toggle input:focus-visible + span {
+  outline: 3px solid #48b8c9;
+  outline-offset: 4px;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 21px;
+  margin: 30px 0;
+}
+.metric {
+  padding: 24px;
+}
+.metricTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.metricTop > a {
+  color: #8da0b6;
+  padding: 7px;
+}
+.metricIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 57px;
+  height: 57px;
+  border-radius: 15px;
+  color: #1e4564;
+  background: #eaf1fc;
+}
+.metric:nth-child(2) .metricIcon {
+  background: #def4f1;
+  color: #007e87;
+}
+.metric h2 {
+  font-weight: 550;
+  font-size: 0.88rem;
+  color: #4b5e7a;
+  margin: 23px 0 9px;
+}
+.metric > strong {
+  font-size: 2.65rem;
+  font-weight: 750;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: #00878e;
+}
+.metric > p {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+.overviewBadge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.71rem;
+  color: #647993;
+  white-space: nowrap;
+}
+.management {
+  padding: 28px;
+}
+.managementHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 28px;
+}
+.managementHeading h2 {
+  font-size: 1.4rem;
+  letter-spacing: -0.035em;
+  margin: 0 0 8px;
+}
+.managementHeading p {
+  font-size: 0.84rem;
+  color: var(--muted);
+  margin: 0;
+  max-width: 430px;
+}
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  background: #008c96;
+  color: white;
+  border-radius: 5px;
+  padding: 14px 17px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.roles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 26px;
+}
+.roles > div {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  border: 1px solid var(--line);
+  padding: 21px;
+  border-radius: 6px;
+  background: #fcfdff;
+}
+.roles > div > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e4f5f3;
+  width: 58px;
+  height: 58px;
+  color: #27576b;
+}
+.roles > div:nth-child(2) > span {
+  background: #e9f0fd;
+}
+.roles h3 {
+  font-size: 0.95rem;
+  margin: 0 0 6px;
+}
+.roles p {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin: 0;
+}
+.quickLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 24px;
+  padding: 23px 5px;
+}
+.quickLink h2 {
+  font-size: 0.95rem;
+  margin: 0 0 7px;
+}
+.quickLink p {
+  font-size: 0.79rem;
+  color: var(--muted);
+  margin: 0;
+}
+.quickLink > a {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--teal);
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+@media (max-width: 1200px) {
+  .metrics {
+    gap: 15px;
+  }
+  .metric {
+    padding: 20px;
+  }
+  .managementHeading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .roles > div {
+    padding: 16px;
+    gap: 12px;
+  }
+  .roles > div > span {
+    width: 45px;
+    height: 45px;
+  }
+}
+@media (max-width: 650px) {
+  .metrics {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .metric {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    column-gap: 17px;
+    padding: 19px;
+  }
+  .metricTop {
+    grid-column: 1;
+    grid-row: 1/4;
+    align-items: flex-start;
+  }
+  .metricTop > a {
+    display: none;
+  }
+  .metric h2 {
+    grid-column: 2;
+    margin: 0 0 9px;
+  }
+  .metric > strong {
+    grid-column: 2;
+    font-size: 2rem;
+  }
+  .metric > p {
+    grid-column: 2;
+  }
+  .overviewBadge {
+    display: none;
+  }
+  .management {
+    padding: 20px;
+  }
+  .roles {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+  .quickLink {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .managementHeading h2 {
+    font-size: 1.25rem;
+  }
+  .actionLink {
+    font-size: 0.76rem;
+    width: 100%;
+  }
+}
