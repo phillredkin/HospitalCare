@@ -1,0 +1,74 @@
+.fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  gap: 18px;
+}
+.grid2,
+.grid3 {
+  display: grid;
+  gap: 17px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.saved {
+  background: #e9f8f1;
+  color: #177153;
+  border: 1px solid #c3e6d4;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 0.84rem;
+  margin: 0;
+}
+.notes {
+  display: grid;
+  gap: 13px;
+  margin-top: 24px;
+}
+.note {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.note > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  font-size: 0.69rem;
+  color: var(--muted);
+}
+.note strong {
+  font-size: 0.75rem;
+  color: #425775;
+}
+.note p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.81rem;
+  margin: 9px 0 0;
+  color: #344563;
+  line-height: 1.65;
+}
+.counter {
+  font-size: 0.69rem;
+  text-align: right;
+  color: var(--muted);
+  margin: 6px 0 12px;
+}
+@media (max-width: 1200px) {
+  .grid3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .grid2,
+  .grid3 {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
