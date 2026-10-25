@@ -1,0 +1,211 @@
+.page {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  min-height: 100dvh;
+  background: white;
+}
+.brand {
+  background:
+    radial-gradient(ellipse at 0 100%, #203d59 0, transparent 65%),
+    linear-gradient(145deg, #1a3855, #10263e);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 49px 55px;
+  position: relative;
+  overflow: hidden;
+}
+.logo {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.logo span {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: #b4c7dd;
+  letter-spacing: 0;
+  margin-top: 7px;
+}
+.pitch {
+  margin: auto 0;
+  padding-top: 60px;
+}
+.eyebrow {
+  font-size: 0.63rem;
+  letter-spacing: 0.2em;
+  color: #80cbd1;
+  font-weight: 600;
+}
+.pitch h1 {
+  font-size: clamp(2.1rem, 3.2vw, 3.2rem);
+  line-height: 1.2;
+  margin-top: 20px;
+  letter-spacing: -0.045em;
+}
+.pitch h1 span {
+  color: #8ed9dc;
+}
+.pitch p {
+  color: #b1c2d5;
+  font-size: 0.9rem;
+  max-width: 310px;
+}
+.illustration {
+  position: relative;
+  height: 230px;
+  margin: 20px 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.orbit {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  background: #2c5a8038;
+  border-radius: 50%;
+  right: 3%;
+  top: 0;
+}
+.record {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  border: 2px solid #6798ba;
+  border-radius: 18px;
+  width: 180px;
+  padding: 23px;
+  color: #8dd5db;
+  transform: rotate(-5deg);
+  background: #17344f99;
+}
+.record > svg:last-child {
+  height: 45px;
+  margin-left: 24px;
+}
+.recordLines {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+.recordLines i {
+  height: 3px;
+  border-radius: 2px;
+  background: #527f9f;
+}
+.recordLines i:nth-child(2) {
+  width: 75%;
+}
+.loginArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 90px 45px 55px;
+  position: relative;
+  background: radial-gradient(ellipse at 85% 0, #edf5fb88, transparent 60%);
+}
+.loginCard {
+  width: min(100%, 420px);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 34px;
+  background: white;
+  box-shadow: 0 8px 32px #15344c04;
+}
+.lock {
+  display: inline-flex;
+  padding: 12px;
+  border-radius: 12px;
+  background: #e8f7f6;
+  color: var(--teal);
+  margin-bottom: 18px;
+}
+.loginCard h2 {
+  font-size: 1.9rem;
+  letter-spacing: -0.04em;
+  margin: 0 0 8px;
+}
+.loginCard > p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 28px;
+}
+.password {
+  position: relative;
+}
+.password input {
+  padding-right: 45px;
+}
+.password > button {
+  position: absolute;
+  right: 9px;
+  top: 28px;
+  border: 0;
+  background: none;
+  color: #71809a;
+  padding: 5px;
+  cursor: pointer;
+}
+.access {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-top: 1px solid var(--line);
+  padding-top: 19px;
+  margin-top: 23px;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.help {
+  font-size: 0.74rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 22px;
+}
+@media (max-width: 1023px) {
+  .brand {
+    padding: 35px 30px;
+  }
+  .pitch h1 {
+    font-size: 2.2rem;
+  }
+  .loginArea {
+    padding: 90px 25px 40px;
+  }
+  .loginCard {
+    padding: 27px;
+  }
+}
+@media (max-width: 650px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+  .brand {
+    padding: 25px 24px;
+  }
+  .logo {
+    font-size: 1.65rem;
+  }
+  .logo span {
+    font-size: 0.75rem;
+  }
+  .pitch {
+    display: none;
+  }
+  .loginArea {
+    padding: 65px 18px 35px;
+    min-height: calc(100dvh - 110px);
+  }
+  .loginCard {
+    padding: 25px 22px;
+  }
+  .loginCard h2 {
+    font-size: 1.7rem;
+  }
+}

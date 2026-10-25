@@ -1,0 +1,7 @@
+src/test/
+**/*.test.*
+**/*.spec.*
+e2e/
+scripts/
+node_modules/
+dist/

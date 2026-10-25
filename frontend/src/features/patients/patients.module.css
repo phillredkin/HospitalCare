@@ -1,0 +1,208 @@
+.eyebrow {
+  font-size: 0.62rem;
+  font-weight: 650;
+  letter-spacing: 0.15em;
+  color: var(--teal);
+  margin-bottom: 11px;
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--line-strong);
+  background: white;
+  border-radius: 6px;
+  padding: 0 16px;
+  height: 49px;
+  color: #687b99;
+  margin: 0 0 24px;
+}
+.search input {
+  border: 0;
+  outline: none;
+  background: none;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.87rem;
+  color: var(--ink);
+}
+.search:focus-within {
+  outline: 2px solid #46b6c6;
+  outline-offset: 2px;
+}
+.search span {
+  font-size: 0.7rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.list {
+  padding: 7px 9px 20px;
+}
+.list > div:last-child {
+  margin-left: 9px;
+  margin-right: 9px;
+}
+.openRecord {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #007f8b;
+  border: 1px solid #58a9b5;
+  background: white;
+  border-radius: 4px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 9px 12px;
+  white-space: nowrap;
+}
+.openRecord:hover {
+  background: #edfafa;
+}
+.summary {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  gap: 15px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: linear-gradient(110deg, #f0f6fb, #f8fafc);
+  padding: 19px 22px;
+  margin-bottom: 24px;
+}
+.summary > div + div {
+  border-left: 1px solid var(--line);
+  padding-left: 25px;
+}
+.summary small {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.summary strong {
+  font-size: 0.9rem;
+}
+.summary .identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.identity strong {
+  font-size: 1.1rem;
+}
+.recordGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(280px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.side {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.risk {
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 15px 0 4px;
+}
+.riskIcon {
+  display: flex;
+  width: 76px;
+  height: 76px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eaf7f7;
+  color: #68a5aa;
+}
+.risk p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+.risk strong {
+  color: #3d6579;
+  font-size: 1rem;
+}
+.history {
+  display: grid;
+  gap: 10px;
+}
+.history button {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: white;
+  padding: 13px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.history button.selected {
+  border-color: #008b95;
+  background: #f0fbfa;
+  box-shadow: inset 3px 0 #008b95;
+}
+.history small {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.history strong {
+  font-size: 0.83rem;
+}
+@media (max-width: 1200px) {
+  .recordGrid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
+  }
+  .summary {
+    padding: 17px;
+    gap: 10px;
+  }
+  .summary > div + div {
+    padding-left: 15px;
+  }
+}
+@media (max-width: 1023px) {
+  .recordGrid {
+    grid-template-columns: 1fr;
+  }
+  .side {
+    grid-template-columns: 1fr 1fr;
+  }
+  .summary {
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .search span {
+    display: none;
+  }
+  .summary {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .summary > div + div {
+    padding-left: 0;
+    border: 0;
+  }
+  .summary .identity {
+    grid-column: 1/-1;
+  }
+  .side {
+    grid-template-columns: 1fr;
+  }
+  .summary strong {
+    font-size: 0.82rem;
+  }
+}

@@ -1,17 +1,41 @@
 services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hospitalcare-frontend
+    ports:
+      - "127.0.0.1:5173:80"
+    depends_on:
+      mvc:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/healthz && wget -q -O /dev/null http://127.0.0.1/api/auth/csrf"]
+      interval: 15s
+      timeout: 10s
+      start_period: 30s
+      retries: 5
+    restart: unless-stopped
+
   mvc:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: hospitalcare-mvc
     ports:
-      - "5007:8080"
+      - "127.0.0.1:5007:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__Redis: redis:6379
+      ConnectionStrings__DefaultConnection: ${HOSPITALCARE_SQL_CONNECTION_STRING:?Set HOSPITALCARE_SQL_CONNECTION_STRING in the root .env file}
+      DataProtection__KeysPath: /app/keys
+    volumes:
+      - data-protection-keys:/app/keys
     depends_on:
-      - redis
-      - ml-service
+      redis:
+        condition: service_healthy
+      ml-service:
+        condition: service_healthy
     restart: unless-stopped
 
   ml-service:
@@ -20,10 +44,24 @@ services:
       dockerfile: Dockerfile
     container_name: hospitalcare-ml
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      start_period: 30s
+      retries: 5
     restart: unless-stopped
 
   redis:
     image: redis:7-alpine
     container_name: hospitalcare-redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: unless-stopped
+
+volumes:
+  data-protection-keys:
