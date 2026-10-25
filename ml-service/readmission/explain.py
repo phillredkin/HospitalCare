@@ -1,15 +1,8 @@
-"""Prediction explanation: which fields raise the risk most for a given patient.
-
-Impact of a field = p(patient) - mean p when this field's value is replaced with
-values of random training patients (background). A positive impact means the field
-raises the risk compared to a "typical" patient. Works with any model.
-"""
 import numpy as np
 import pandas as pd
 
 from .features import INPUT_COLUMNS
 
-# Impacts below 0.5 percentage points are not reported
 MIN_IMPACT = 0.005
 
 FIELD_LABELS = {
@@ -44,16 +37,10 @@ def _plain(value):
 
 
 def explain(model, background, records, top_k=3):
-    """records: DataFrame or list of dicts with INPUT_COLUMNS fields.
-
-    Returns, for each record, up to top_k factors that raise the risk:
-    [{"field", "label", "value", "impact"}], impact = how much the field raises the probability.
-    """
     X = pd.DataFrame(records).reindex(columns=INPUT_COLUMNS).reset_index(drop=True)
     bg = background.reindex(columns=INPUT_COLUMNS).reset_index(drop=True)
     p = model.predict_proba(X)[:, 1]
 
-    # Background values repeat a lot: evaluate each unique value once, weighted by its count
     counts = [bg[field].value_counts(dropna=False) for field in INPUT_COLUMNS]
     sizes = [len(c) for c in counts]
     weights = np.concatenate([c.to_numpy() / len(bg) for c in counts])

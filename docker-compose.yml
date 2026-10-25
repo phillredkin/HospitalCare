@@ -1,3 +1,4 @@
+
 services:
   frontend:
     build:
@@ -45,11 +46,34 @@ services:
     container_name: hospitalcare-ml
     ports:
       - "127.0.0.1:8000:8000"
+    environment:
+      DATABASE_URL: ${ML_DATABASE_URL:-postgresql+psycopg://hospitalcare:hospitalcare@ml-db:5432/hospitalcare_ml}
+    depends_on:
+      ml-db:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
       interval: 15s
       timeout: 10s
       start_period: 30s
+      retries: 5
+    restart: unless-stopped
+
+  ml-db:
+    image: postgres:17-alpine
+    container_name: hospitalcare-ml-db
+    environment:
+      POSTGRES_USER: hospitalcare
+      POSTGRES_PASSWORD: hospitalcare
+      POSTGRES_DB: hospitalcare_ml
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - ml-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hospitalcare -d hospitalcare_ml"]
+      interval: 10s
+      timeout: 5s
       retries: 5
     restart: unless-stopped
 
@@ -65,3 +89,4 @@ services:
 
 volumes:
   data-protection-keys:
+  ml-db-data:

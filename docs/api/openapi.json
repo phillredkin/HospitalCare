@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "HospitalCare ML API",
-    "description": "Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge.\n\n- `status: ok` - prediction made.\n- `status: unsupported` - input is valid, but outside the range of the training data (e.g. stay longer than 14 days); no prediction, see `reasons`.\n- HTTP 422 - invalid input (wrong type, negative number, missing required field).",
-    "version": "1.0.0"
+    "description": "Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge.\n\n- `status: ok` - prediction made.\n- `status: unsupported` - input is valid, but outside the range of the training data (e.g. stay longer than 14 days); no prediction, see `reasons`.\n- HTTP 422 - invalid input (wrong type, negative number, missing required field).\n\nEvery prediction is stored; fetch it later with `GET /predictions/{prediction_id}`. Repeating `POST /predict` with the same `request_id` returns the stored prediction.",
+    "version": "1.1.0"
   },
   "paths": {
     "/health": {
@@ -63,6 +63,50 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/predictions/{prediction_id}": {
+      "get": {
+        "summary": "Get Prediction",
+        "description": "Stored prediction by its id (the C# backend keeps only this id in PredictionLinks).",
+        "operationId": "get_prediction_predictions__prediction_id__get",
+        "parameters": [
+          {
+            "name": "prediction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Prediction Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Prediction not found"
           },
           "422": {
             "description": "Validation Error",
@@ -168,10 +212,17 @@
             "description": "Code from IDs_mapping.csv"
           },
           "admission_source_id": {
-            "type": "integer",
-            "minimum": 1.0,
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Admission Source Id",
-            "description": "Code from IDs_mapping.csv"
+            "description": "Code from IDs_mapping.csv; optional, has little effect on the prediction"
           },
           "medical_specialty": {
             "anyOf": [
@@ -284,7 +335,8 @@
             "default": "none"
           },
           "medications": {
-            "$ref": "#/components/schemas/Medications"
+            "$ref": "#/components/schemas/Medications",
+            "description": "Diabetic medication during the stay: no / steady / up (dose increased) / down (dose decreased)"
           },
           "change": {
             "anyOf": [
@@ -317,7 +369,6 @@
           "gender",
           "admission_type_id",
           "discharge_disposition_id",
-          "admission_source_id",
           "time_in_hospital",
           "num_lab_procedures",
           "num_procedures",
@@ -455,8 +506,7 @@
           }
         },
         "type": "object",
-        "title": "Medications",
-        "description": "Diabetic medication during the stay: no / steady / up (dose increased) / down (dose decreased)."
+        "title": "Medications"
       },
       "PredictRequest": {
         "properties": {
@@ -576,6 +626,12 @@
             "type": "array",
             "title": "Reasons",
             "description": "Why there is no prediction (only when status = unsupported)"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "When the prediction was made (UTC)"
           }
         },
         "type": "object",
@@ -587,7 +643,8 @@
           "probability",
           "risk_level",
           "top_factors",
-          "reasons"
+          "reasons",
+          "created_at"
         ],
         "title": "PredictResponse"
       },

@@ -1,17 +1,9 @@
-"""Features for the 30-day readmission risk model.
-
-Used both for training (train.py) and for serving (the FastAPI service):
-FeatureBuilder is pickled inside the pipeline, so the `readmission` package
-must be importable wherever the model is loaded.
-"""
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
-# discharge_disposition_id: expired / hospice - readmission is not possible
 EXCLUDED_DISCHARGE_IDS = [11, 13, 14, 19, 20, 21]
 
-# Medications used in at least ~0.3% of encounters; the rest are almost always "No"
 MEDICATIONS = [
     "metformin", "repaglinide", "nateglinide", "glimepiride", "glipizide", "glyburide",
     "pioglitazone", "rosiglitazone", "acarbose", "insulin", "glyburide-metformin",
@@ -23,17 +15,15 @@ NUMERIC_INPUTS = [
 ID_INPUTS = ["admission_type_id", "discharge_disposition_id", "admission_source_id"]
 DIAG_INPUTS = ["diag_1", "diag_2", "diag_3"]
 
-# Value used when a field is missing
 CATEGORY_DEFAULTS = {
     "gender": "Unknown",
     "medical_specialty": "Unknown",
-    "max_glu_serum": "None",  # "None" in the dataset = test not performed
+    "max_glu_serum": "None",
     "A1Cresult": "None",
     "change": "No",
     "diabetesMed": "No",
 }
 
-# Fields the service passes to the model (API contract). race, weight, payer_code are not used.
 INPUT_COLUMNS = [
     "age", "gender", *ID_INPUTS, "medical_specialty", *NUMERIC_INPUTS, *DIAG_INPUTS,
     "max_glu_serum", "A1Cresult", *MEDICATIONS, "change", "diabetesMed",
@@ -52,7 +42,6 @@ RISK_LEVELS = ("low", "medium", "high")
 
 
 def parse_age(value):
-    """'[70-80)' -> 75; age in years -> middle of the decade (73 -> 75)."""
     if pd.isna(value):
         return np.nan
     s = str(value).strip()
@@ -65,7 +54,6 @@ def parse_age(value):
 
 
 def icd9_group(code):
-    """ICD-9 diagnosis group (as in Strack et al., 2014)."""
     if pd.isna(code) or str(code).strip() in ("", "?"):
         return "Missing"
     s = str(code).strip()
@@ -95,7 +83,6 @@ def icd9_group(code):
 
 
 def icd9_code3(code):
-    """ICD-9 code without the decimal part: '250.83' -> '250'."""
     if pd.isna(code) or str(code).strip() in ("", "?"):
         return "Missing"
     return str(code).strip().split(".")[0]
@@ -119,12 +106,6 @@ def risk_category(prob, thresholds):
 
 
 class FeatureBuilder(BaseEstimator, TransformerMixin):
-    """Raw encounter fields (INPUT_COLUMNS) -> model features.
-
-    Missing fields are allowed: numbers become NaN (the model handles them),
-    categories get a default value.
-    """
-
     def fit(self, X, y=None):
         return self
 
