@@ -1,14 +1,3 @@
-"""Train the model predicting 30-day hospital readmission risk for diabetic patients.
-
-Run from the ml-service/ folder:
-    python train.py [path to diabetic_data.csv, default: data/diabetic_data.csv]
-
-Outputs:
-    artifacts/readmission_model.joblib    - pipeline (features + model), loaded by the FastAPI service
-    artifacts/explainer_background.joblib - patient sample used to explain predictions
-    artifacts/model_meta.json             - metrics, risk thresholds, input domain, parameters
-    reports/*.png                         - plots for the report
-"""
 import json
 import sys
 from datetime import datetime, timezone
@@ -51,7 +40,7 @@ ARTIFACTS = ROOT / "artifacts"
 REPORTS = ROOT / "reports"
 RANDOM_STATE = 42
 N_SEARCH_ITER = 20
-N_BACKGROUND = 100  # training patients used to explain predictions
+N_BACKGROUND = 100
 
 PARAM_SPACE = {
     "model__learning_rate": [0.03, 0.05, 0.1],
@@ -62,7 +51,6 @@ PARAM_SPACE = {
 
 
 def load_data(path):
-    # "?" = missing; "None" in max_glu_serum / A1Cresult is a value (test not performed), not missing
     df = pd.read_csv(path, na_values=["?"], keep_default_na=False,
                      dtype={c: str for c in DIAG_INPUTS}, low_memory=False)
     df = df[~df["discharge_disposition_id"].isin(EXCLUDED_DISCHARGE_IDS)]
@@ -183,7 +171,6 @@ def main():
     groups = df["patient_nbr"]
     print(f"Encounters: {len(df)}, patients: {groups.nunique()}, readmitted < 30 days: {y.mean():.3f}")
 
-    # Split by patient: all encounters of a patient go either to train or to test
     splitter = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=RANDOM_STATE)
     train_idx, test_idx = next(splitter.split(X, y, groups))
     X_tr, X_te = X.iloc[train_idx], X.iloc[test_idx]
@@ -205,7 +192,6 @@ def main():
     print(f"  CV ROC-AUC: {search.best_score_:.4f}")
     print(f"  Parameters: {search.best_params_}")
 
-    # Risk levels: low < base rate <= medium < 2x base rate <= high
     base_rate = float(y_tr.mean())
     thresholds = {"medium": round(base_rate, 2), "high": round(2 * base_rate, 2)}
 

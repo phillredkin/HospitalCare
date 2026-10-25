@@ -1,8 +1,3 @@
-"""Example prediction with the trained model - the FastAPI service calls it the same way.
-
-Run from the ml-service/ folder:
-    python predict.py [JSON file with a list of encounters]
-"""
 import json
 import sys
 from pathlib import Path
@@ -25,7 +20,6 @@ def load_model():
 
 
 def predict(model, background, meta, records):
-    """records: list of dicts with INPUT_COLUMNS fields (missing fields are allowed)."""
     X = pd.DataFrame(records).reindex(columns=INPUT_COLUMNS)
     probs = model.predict_proba(X)[:, 1]
     factors = explain(model, background, X)

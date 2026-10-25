@@ -1,11 +1,6 @@
-"""Model applicability domain: how similar an encounter is to the training data.
-
-Bounds are computed at training time (train.py) and stored in model_meta.json;
-the service checks every request against them. Outside the domain no prediction is made.
-"""
 from .features import EXCLUDED_DISCHARGE_IDS, ID_INPUTS, NUMERIC_INPUTS
 
-MAX_AGE = 99  # the oldest age group in the data is [90-100)
+MAX_AGE = 99
 
 
 def compute_domain(X):
@@ -22,7 +17,6 @@ def _reason(field, code, message):
 
 
 def check_domain(record, domain):
-    """record: dict with INPUT_COLUMNS fields. Returns the reasons why no prediction is made."""
     reasons = []
     for field, codes in domain["known_codes"].items():
         value = record.get(field)

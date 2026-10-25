@@ -1,15 +1,14 @@
-"""API request/response schemas and mapping of API fields (snake_case) to dataset fields."""
+from datetime import datetime, timezone
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 MedStatus = Literal["no", "steady", "up", "down"]
 ICD9_PATTERN = r"^(\d{1,3}(\.\d{1,2})?|V\d{1,2}(\.\d{1,2})?|E\d{3}(\.\d{1,2})?)$"
 
 MED_VALUES = {"no": "No", "steady": "Steady", "up": "Up", "down": "Down"}
 LAB_VALUES = {"none": "None", "norm": "Norm"}
-# Fields whose API name differs from the dataset name
 DATASET_TO_API = {
     "A1Cresult": "a1c_result",
     "diabetesMed": "diabetes_med",
@@ -18,8 +17,6 @@ DATASET_TO_API = {
 
 
 class Medications(BaseModel):
-    """Diabetic medication during the stay: no / steady / up (dose increased) / down (dose decreased)."""
-
     metformin: MedStatus = "no"
     repaglinide: MedStatus = "no"
     nateglinide: MedStatus = "no"
@@ -38,7 +35,8 @@ class Hospitalization(BaseModel):
     gender: Literal["female", "male"]
     admission_type_id: int = Field(ge=1, description="Code from IDs_mapping.csv")
     discharge_disposition_id: int = Field(ge=1, description="Code from IDs_mapping.csv")
-    admission_source_id: int = Field(ge=1, description="Code from IDs_mapping.csv")
+    admission_source_id: int | None = Field(
+        default=None, ge=1, description="Code from IDs_mapping.csv; optional, has little effect on the prediction")
     medical_specialty: str | None = Field(
         default=None, description="E.g. InternalMedicine, Cardiology; full list in GET /model-info")
     time_in_hospital: int = Field(ge=0, description="Length of stay, days (model supports 1-14)")
@@ -54,21 +52,21 @@ class Hospitalization(BaseModel):
     diag_3: str | None = Field(default=None, pattern=ICD9_PATTERN)
     max_glu_serum: Literal["none", "norm", ">200", ">300"] = Field(default="none", description="none = not measured")
     a1c_result: Literal["none", "norm", ">7", ">8"] = Field(default="none", description="none = not measured")
-    medications: Medications = Field(default_factory=Medications)
+    medications: Medications = Field(
+        default_factory=Medications,
+        description="Diabetic medication during the stay: no / steady / up (dose increased) / down (dose decreased)")
     change: bool | None = Field(
         default=None, description="Diabetic medication changed; if omitted, derived from medications")
     diabetes_med: bool | None = Field(
         default=None, description="Any diabetic medication prescribed; if omitted, derived from medications")
 
     def _flags(self):
-        """change / diabetes_med: derived from medications when not provided."""
         meds = self.medications.model_dump().values()
         change = self.change if self.change is not None else any(v in ("up", "down") for v in meds)
         diabetes_med = self.diabetes_med if self.diabetes_med is not None else any(v != "no" for v in meds)
         return change, diabetes_med
 
     def to_model_record(self):
-        """API fields -> dict with dataset field names and values (INPUT_COLUMNS)."""
         meds = {name.replace("_", "-"): MED_VALUES[v] for name, v in self.medications.model_dump().items()}
         change, diabetes_med = self._flags()
         record = self.model_dump(exclude={"medications", "change", "diabetes_med", "a1c_result", "max_glu_serum"})
@@ -83,7 +81,6 @@ class Hospitalization(BaseModel):
         return record
 
     def flat_values(self):
-        """Values as sent by the client, keyed by API field name: {'medications.insulin': 'up', ...}."""
         values = self.model_dump(exclude={"medications"})
         values.update({f"medications.{k}": v for k, v in self.medications.model_dump().items()})
         values["change"], values["diabetes_med"] = self._flags()
@@ -136,6 +133,8 @@ class Reason(BaseModel):
 
 
 class PredictResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     request_id: UUID
     prediction_id: UUID
     model_version: str
@@ -144,3 +143,9 @@ class PredictResponse(BaseModel):
     risk_level: Literal["low", "medium", "high"] | None
     top_factors: list[Factor] = Field(description="Up to 3 fields that raise the risk most")
     reasons: list[Reason] = Field(description="Why there is no prediction (only when status = unsupported)")
+    created_at: datetime = Field(description="When the prediction was made (UTC)")
+
+    @field_validator("created_at")
+    @classmethod
+    def _as_utc(cls, value):
+        return value if value.tzinfo else value.replace(tzinfo=timezone.utc)

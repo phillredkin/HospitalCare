@@ -1,5 +1,3 @@
-# Prediction service dependencies. scikit-learn must match the version the model was trained with,
-# otherwise artifacts/readmission_model.joblib may fail to load.
 numpy==2.5.3
 pandas==3.0.6
 scikit-learn==1.9.1
@@ -7,3 +5,5 @@ joblib==1.6.0
 threadpoolctl==3.7.0
 fastapi==0.143.0
 uvicorn[standard]==0.54.0
+sqlalchemy==2.1.6
+psycopg[binary]==3.3.6
