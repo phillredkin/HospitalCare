@@ -4,6 +4,7 @@ using System.Text.Json;
 using HospitalCare.Web.Data;
 using HospitalCare.Web.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace HospitalCare.Web.Services;
 
@@ -11,11 +12,33 @@ public class MlPredictionService
 {
     private readonly ApplicationDbContext _db;
     private readonly HttpClient _client;
+    private readonly IDistributedCache _cache;
 
-    public MlPredictionService(ApplicationDbContext db, IHttpClientFactory factory)
+    public MlPredictionService(ApplicationDbContext db, IHttpClientFactory factory, IDistributedCache cache)
     {
         _db = db;
         _client = factory.CreateClient("MlService");
+        _cache = cache;
+    }
+
+    private static string GetCacheKey(int hospitalizationId)
+    {
+        return $"prediction:hospitalization:{hospitalizationId}";
+    }
+
+    private async Task CachePredictionAsync(int hospitalizationId, JsonElement result)
+    {
+        try
+        {
+            await _cache.SetStringAsync(GetCacheKey(hospitalizationId), result.GetRawText(), new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24)
+            });
+        }
+        catch (Exception)
+        {
+            // Redis failure must not prevent prediction retrieval.
+        }
     }
 
     private static string? Normalize(string? value)
@@ -168,6 +191,8 @@ public class MlPredictionService
         _db.PredictionLinks.Add(link);
         await _db.SaveChangesAsync();
 
+        await CachePredictionAsync(hospitalizationId, result);
+
         return result;
     }
 
@@ -195,6 +220,21 @@ public class MlPredictionService
 
     public async Task<JsonElement?> GetLatestPredictionAsync(int hospitalizationId)
     {
+        try
+        {
+            var cached = await _cache.GetStringAsync(GetCacheKey(hospitalizationId));
+
+            if (!string.IsNullOrWhiteSpace(cached))
+            {
+                using var cachedDocument = JsonDocument.Parse(cached);
+                return cachedDocument.RootElement.Clone();
+            }
+        }
+        catch (Exception)
+        {
+            // Fall back to the database if Redis is unavailable.
+        }
+
         var link = await _db.PredictionLinks
             .AsNoTracking()
             .Where(x => x.HospitalizationId == hospitalizationId)
@@ -205,7 +245,12 @@ public class MlPredictionService
         if (link == null)
             return null;
 
-        return await GetPredictionAsync(link.PredictionId);
+        var result = await GetPredictionAsync(link.PredictionId);
+
+        if (result.HasValue)
+            await CachePredictionAsync(hospitalizationId, result.Value);
+
+        return result;
     }
 
     private static bool? ParseBoolean(string? value, string field)
