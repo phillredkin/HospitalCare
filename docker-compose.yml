@@ -30,6 +30,7 @@ services:
       ConnectionStrings__Redis: redis:6379
       ConnectionStrings__DefaultConnection: ${HOSPITALCARE_SQL_CONNECTION_STRING:?Set HOSPITALCARE_SQL_CONNECTION_STRING in the root .env file}
       DataProtection__KeysPath: /app/keys
+      MlService__BaseUrl: http://ml-service:8000
     volumes:
       - data-protection-keys:/app/keys
     depends_on:

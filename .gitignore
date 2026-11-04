@@ -36,9 +36,9 @@ docker-compose.override.yml
 
 # Limit new root files to the frontend and shared runtime configuration.
 # Existing tracked backend/ML files remain tracked.
-/*
-!/.gitignore
-!/README.md
-!/.env.example
-!/docker-compose.yml
-!/frontend/
+#/*
+#!/.gitignore
+#!/README.md
+#!/.env.example
+#!/docker-compose.yml
+#!/frontend/
