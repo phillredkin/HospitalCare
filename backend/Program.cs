@@ -67,6 +67,12 @@ builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<HospitalizationService>();
 builder.Services.AddScoped<MedicationService>();
 builder.Services.AddScoped<ClinicalNoteService>();
+builder.Services.AddScoped<MlPredictionService>();
+builder.Services.AddHttpClient("MlService", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["MlService:BaseUrl"] ?? "http://localhost:8000");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
 
 builder.Services.AddRateLimiter(options =>
 {
