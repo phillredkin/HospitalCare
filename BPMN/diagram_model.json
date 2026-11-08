@@ -1,0 +1,5413 @@
+{
+  "nodes": {
+    "Start_Admin": {
+      "id": "Start_Admin",
+      "label": "Správa IS",
+      "kind": "startEvent",
+      "lane": "Admin",
+      "cx": 312,
+      "cy": 456,
+      "x": 288,
+      "y": 432,
+      "w": 48,
+      "h": 48,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 216,
+        "y": 492,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "T01": {
+      "id": "T01",
+      "label": "Zadať prihlasovacie údaje",
+      "kind": "userTask",
+      "lane": "Admin",
+      "cx": 552,
+      "cy": 456,
+      "x": 432,
+      "y": 384,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zadať prihlasovacie údaje.",
+      "labelBounds": null
+    },
+    "T02": {
+      "id": "T02",
+      "label": "Overiť administrátora",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 552,
+      "cy": 1080,
+      "x": 432,
+      "y": 1008,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Overiť administrátora.",
+      "labelBounds": null
+    },
+    "G_AdminAuth": {
+      "id": "G_AdminAuth",
+      "label": "Prihlásenie platné?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 864,
+      "cy": 1080,
+      "x": 816,
+      "y": 1032,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 744,
+        "y": 990,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T03": {
+      "id": "T03",
+      "label": "Zobraziť chybu prihlásenia",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 864,
+      "cy": 1320,
+      "x": 744,
+      "y": 1248,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zobraziť chybu prihlásenia.",
+      "labelBounds": null
+    },
+    "T04": {
+      "id": "T04",
+      "label": "Vytvoriť reláciu administrátora",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 1176,
+      "cy": 1080,
+      "x": 1056,
+      "y": 1008,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Vytvoriť session administrátora.",
+      "labelBounds": null
+    },
+    "T05": {
+      "id": "T05",
+      "label": "Zobraziť prehľad systému",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 1488,
+      "cy": 1080,
+      "x": 1368,
+      "y": 1008,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zobraziť súhrn IS.",
+      "labelBounds": null
+    },
+    "T06": {
+      "id": "T06",
+      "label": "Otvoriť správu používateľov",
+      "kind": "userTask",
+      "lane": "Admin",
+      "cx": 1488,
+      "cy": 456,
+      "x": 1368,
+      "y": 384,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Otvoriť správu používateľov.",
+      "labelBounds": null
+    },
+    "T07": {
+      "id": "T07",
+      "label": "Vybrať používateľský účet",
+      "kind": "userTask",
+      "lane": "Admin",
+      "cx": 1800,
+      "cy": 456,
+      "x": 1680,
+      "y": 384,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Vybrať účet alebo nový účet.",
+      "labelBounds": null
+    },
+    "G_AccountMode": {
+      "id": "G_AccountMode",
+      "label": "Nový účet?",
+      "kind": "exclusiveGateway",
+      "lane": "Admin",
+      "cx": 2112,
+      "cy": 456,
+      "x": 2064,
+      "y": 408,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 1992,
+        "y": 366,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T08": {
+      "id": "T08",
+      "label": "Vyplniť nový účet",
+      "kind": "userTask",
+      "lane": "Admin",
+      "cx": 2424,
+      "cy": 408,
+      "x": 2304,
+      "y": 336,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Vyplniť nový účet.",
+      "labelBounds": null
+    },
+    "T09": {
+      "id": "T09",
+      "label": "Upraviť rolu a stav účtu",
+      "kind": "userTask",
+      "lane": "Admin",
+      "cx": 2424,
+      "cy": 672,
+      "x": 2304,
+      "y": 600,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Upraviť rolu a stav účtu.",
+      "labelBounds": null
+    },
+    "G_AccountMerge": {
+      "id": "G_AccountMerge",
+      "label": "",
+      "kind": "exclusiveGateway",
+      "lane": "Admin",
+      "cx": 2736,
+      "cy": 456,
+      "x": 2688,
+      "y": 408,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": null
+    },
+    "T10": {
+      "id": "T10",
+      "label": "Overiť údaje účtu",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 3048,
+      "cy": 1080,
+      "x": 2928,
+      "y": 1008,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Overiť údaje účtu.",
+      "labelBounds": null
+    },
+    "G_AccountValid": {
+      "id": "G_AccountValid",
+      "label": "Údaje platné?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 3360,
+      "cy": 1080,
+      "x": 3312,
+      "y": 1032,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 3240,
+        "y": 990,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T11": {
+      "id": "T11",
+      "label": "Zobraziť chyby účtu",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 3360,
+      "cy": 1320,
+      "x": 3240,
+      "y": 1248,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zobraziť chyby účtu.",
+      "labelBounds": null
+    },
+    "T12": {
+      "id": "T12",
+      "label": "Uložiť účet do Azure SQL",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 3672,
+      "cy": 1080,
+      "x": 3552,
+      "y": 1008,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Uložiť účet do IS DB.",
+      "labelBounds": null
+    },
+    "T13": {
+      "id": "T13",
+      "label": "Zobraziť výsledok zmeny",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 3984,
+      "cy": 1080,
+      "x": 3864,
+      "y": 1008,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zobraziť výsledok zmeny.",
+      "labelBounds": null
+    },
+    "T14": {
+      "id": "T14",
+      "label": "Odhlásiť administrátora",
+      "kind": "userTask",
+      "lane": "Admin",
+      "cx": 4296,
+      "cy": 456,
+      "x": 4176,
+      "y": 384,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Odhlásiť administrátora.",
+      "labelBounds": null
+    },
+    "T15": {
+      "id": "T15",
+      "label": "Zrušiť reláciu administrátora",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 4296,
+      "cy": 1080,
+      "x": 4176,
+      "y": 1008,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zrušiť session administrátora.",
+      "labelBounds": null
+    },
+    "End_Admin": {
+      "id": "End_Admin",
+      "label": "Odhlásený",
+      "kind": "endEvent",
+      "lane": "App",
+      "cx": 4536,
+      "cy": 1080,
+      "x": 4512,
+      "y": 1056,
+      "w": 48,
+      "h": 48,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 4440,
+        "y": 1116,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "Start_Doctor": {
+      "id": "Start_Doctor",
+      "label": "Práca lekára",
+      "kind": "startEvent",
+      "lane": "Doctor",
+      "cx": 312,
+      "cy": 3096,
+      "x": 288,
+      "y": 3072,
+      "w": 48,
+      "h": 48,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 216,
+        "y": 3132,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "T16": {
+      "id": "T16",
+      "label": "Zadať prihlasovacie údaje",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 552,
+      "cy": 3096,
+      "x": 432,
+      "y": 3024,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zadať prihlasovacie údaje.",
+      "labelBounds": null
+    },
+    "T17": {
+      "id": "T17",
+      "label": "Overiť lekára",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 552,
+      "cy": 1632,
+      "x": 432,
+      "y": 1560,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Overiť lekára.",
+      "labelBounds": null
+    },
+    "G_DoctorAuth": {
+      "id": "G_DoctorAuth",
+      "label": "Prihlásenie platné?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 864,
+      "cy": 1632,
+      "x": 816,
+      "y": 1584,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 744,
+        "y": 1542,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T18": {
+      "id": "T18",
+      "label": "Zobraziť chybu prihlásenia",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 864,
+      "cy": 1872,
+      "x": 744,
+      "y": 1800,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zobraziť chybu prihlásenia.",
+      "labelBounds": null
+    },
+    "T19": {
+      "id": "T19",
+      "label": "Vytvoriť reláciu lekára",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 1176,
+      "cy": 1632,
+      "x": 1056,
+      "y": 1560,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Vytvoriť session lekára.",
+      "labelBounds": null
+    },
+    "T20": {
+      "id": "T20",
+      "label": "Načítať zoznam pacientov",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 1488,
+      "cy": 1632,
+      "x": 1368,
+      "y": 1560,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Načítať zoznam pacientov.",
+      "labelBounds": null
+    },
+    "T21": {
+      "id": "T21",
+      "label": "Vyhľadať pacienta",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 1488,
+      "cy": 3096,
+      "x": 1368,
+      "y": 3024,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Vyhľadať pacienta.",
+      "labelBounds": null
+    },
+    "G_PatientExists": {
+      "id": "G_PatientExists",
+      "label": "Pacient existuje?",
+      "kind": "exclusiveGateway",
+      "lane": "Doctor",
+      "cx": 1800,
+      "cy": 3096,
+      "x": 1752,
+      "y": 3048,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 1680,
+        "y": 3006,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T22": {
+      "id": "T22",
+      "label": "Otvoriť kartu pacienta",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 2112,
+      "cy": 3096,
+      "x": 1992,
+      "y": 3024,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Otvoriť kartu pacienta.",
+      "labelBounds": null
+    },
+    "T23": {
+      "id": "T23",
+      "label": "Otvoriť formulár pacienta",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 2112,
+      "cy": 3360,
+      "x": 1992,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Otvoriť PatientForm v režime vytvorenia. Pacient sa do Azure SQL uloží až v T69 po zadaní údajov.\nPôvodný názov: Otvoriť formulár nového pacienta.",
+      "labelBounds": null
+    },
+    "G_PatientMerge": {
+      "id": "G_PatientMerge",
+      "label": "",
+      "kind": "exclusiveGateway",
+      "lane": "Doctor",
+      "cx": 2424,
+      "cy": 3096,
+      "x": 2376,
+      "y": 3048,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": null
+    },
+    "T24": {
+      "id": "T24",
+      "label": "Načítať históriu hospitalizácií",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 2736,
+      "cy": 1632,
+      "x": 2616,
+      "y": 1560,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Načítať históriu hospitalizácií.",
+      "labelBounds": null
+    },
+    "T25": {
+      "id": "T25",
+      "label": "Vybrať hospitalizáciu",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 2736,
+      "cy": 3096,
+      "x": 2616,
+      "y": 3024,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Vybrať už uloženú hospitalizáciu s ID alebo otvoriť formulár novej hospitalizácie. Nový záznam a jeho ID vzniknú až úspešným uložením v T35.\nPôvodný názov: Zvoliť novú alebo otvoriť hospitalizáciu.",
+      "labelBounds": null
+    },
+    "T26": {
+      "id": "T26",
+      "label": "Upraviť údaje pacienta",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 2424,
+      "cy": 3600,
+      "x": 2304,
+      "y": 3528,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Samostatný PatientForm: meno, priezvisko, dátum narodenia, pohlavie a typ diabetu. Údaje sa odosielajú do /api/patients, nie v požiadavke na uloženie hospitalizácie.\nPôvodný názov: Zadať alebo upraviť údaje pacienta.",
+      "labelBounds": null
+    },
+    "T27": {
+      "id": "T27",
+      "label": "Zadať diagnózy hospitalizácie",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 3048,
+      "cy": 3360,
+      "x": 2928,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "HospitalizationForm obsahuje diag1, diag2 a diag3. Typ diabetu patrí pacientovi a ukladá sa samostatne cez PatientForm.\nPôvodný názov: Zadať diagnózy hospitalizácie.",
+      "labelBounds": null
+    },
+    "T28": {
+      "id": "T28",
+      "label": "Zadať prijatie a prepustenie",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 3360,
+      "cy": 3360,
+      "x": 3240,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zadať prijatie a prepustenie.",
+      "labelBounds": null
+    },
+    "T29": {
+      "id": "T29",
+      "label": "Zadať liek a stav dávky",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 5544,
+      "cy": 3360,
+      "x": 5424,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Samostatný MedicationForm pre už uloženú hospitalizáciu. Obsahuje medicationName a doseStatus; inzulín je jedným z možných liekov, nie osobitným poľom formulára hospitalizácie.\nPôvodný názov: Zadať liek a stav dávky.",
+      "labelBounds": null
+    },
+    "T30": {
+      "id": "T30",
+      "label": "Zadať HbA1c a glykémiu",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 3672,
+      "cy": 3360,
+      "x": 3552,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zadať HbA1c a glykémiu.",
+      "labelBounds": null
+    },
+    "T31": {
+      "id": "T31",
+      "label": "Zadať počty výkonov a diagnóz",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 3984,
+      "cy": 3360,
+      "x": 3864,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zadať počty výkonov a diagnóz.",
+      "labelBounds": null
+    },
+    "T32": {
+      "id": "T32",
+      "label": "Zadať návštevy za posledný rok",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 4296,
+      "cy": 3360,
+      "x": 4176,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zadať návštevy za posledný rok.",
+      "labelBounds": null
+    },
+    "T33": {
+      "id": "T33",
+      "label": "Overiť údaje hospitalizácie",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 4296,
+      "cy": 2664,
+      "x": 4176,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Validácia formulára a DTO hospitalizácie: dátumy, formáty, rozsahy a počty. Nullable polia môžu zostať nevyplnené. Úplnosť pre ML sa overuje osobitne až pred odoslaním predikcie.\nPôvodný názov: Overiť údaje hospitalizácie.",
+      "labelBounds": null
+    },
+    "G_ClinicalValid": {
+      "id": "G_ClinicalValid",
+      "label": "Údaje platné?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 4608,
+      "cy": 2664,
+      "x": 4560,
+      "y": 2616,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 4488,
+        "y": 2574,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T34": {
+      "id": "T34",
+      "label": "Zobraziť chyby formulára",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 4608,
+      "cy": 2424,
+      "x": 4488,
+      "y": 2352,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zobraziť chyby formulára.",
+      "labelBounds": null
+    },
+    "T35": {
+      "id": "T35",
+      "label": "Uložiť hospitalizáciu do Azure SQL",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 4920,
+      "cy": 2664,
+      "x": 4800,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "POST/PATCH /api/hospitalizations uloží iba polia HospitalizationInput do Azure SQL. Neukladá demografické údaje pacienta, typ diabetu ani zoznam liekov. Výsledok poskytne ID potrebné na pridávanie liekov a poznámok.\nPôvodný názov: Uložiť hospitalizáciu do Azure SQL.",
+      "labelBounds": null
+    },
+    "T36": {
+      "id": "T36",
+      "label": "Vyžiadať predikciu rizika",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 6168,
+      "cy": 3360,
+      "x": 6048,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Požiadať o predikciu pri prepustení.",
+      "labelBounds": null
+    },
+    "T37": {
+      "id": "T37",
+      "label": "Overiť oprávnenie požiadavky",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 6168,
+      "cy": 2664,
+      "x": 6048,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "C# middleware overí session cookie, rolu Admin/Doctor a CSRF hlavičku. Samostatný ML token sa nevydáva.\nPôvodný názov: Overiť session, rolu a CSRF na C# API.",
+      "labelBounds": null
+    },
+    "T38": {
+      "id": "T38",
+      "label": "Odoslať požiadavku do Python API",
+      "kind": "sendTask",
+      "lane": "App",
+      "cx": 7104,
+      "cy": 2664,
+      "x": 6984,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Po úspešnej kontrole vstupov vytvoriť nový request_id (Guid.NewGuid), zostaviť payload a odoslať POST /predict do Python API. Každý nový pokus z UI používa nový request_id.\nPôvodný názov: Odoslať požiadavku do Python API.",
+      "labelBounds": null
+    },
+    "T39": {
+      "id": "T39",
+      "label": "Prijať výsledok alebo chybu",
+      "kind": "receiveTask",
+      "lane": "App",
+      "cx": 7416,
+      "cy": 2664,
+      "x": 7296,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Prijať výsledok alebo chybu.",
+      "labelBounds": null
+    },
+    "Timeout": {
+      "id": "Timeout",
+      "label": "30 s",
+      "kind": "boundaryEvent",
+      "lane": "App",
+      "cx": 7488,
+      "cy": 2736,
+      "x": 7464,
+      "y": 2712,
+      "w": 48,
+      "h": 48,
+      "scope": "P1",
+      "documentation": "HttpClient MlService v backend/Program.cs má timeout 30 sekúnd. Nejde o automatický opakovaný pokus.",
+      "attachedToRef": "T39",
+      "event": {
+        "type": "timer",
+        "duration": "PT30S",
+        "interrupting": true
+      },
+      "labelBounds": {
+        "x": 7248,
+        "y": 2748,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "T40": {
+      "id": "T40",
+      "label": "Zobraziť riziko a faktory",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 8976,
+      "cy": 2424,
+      "x": 8856,
+      "y": 2352,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "UI zobrazuje percento rizika, úroveň rizika a vysvetľujúce faktory. Verzia modelu a čas sú v odpovedi API, ale aktuálne sa v tejto karte nezobrazujú.\nPôvodný názov: Zobraziť riziko a vysvetľujúce faktory.",
+      "labelBounds": null
+    },
+    "T41": {
+      "id": "T41",
+      "label": "Zapísať klinickú poznámku",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 8976,
+      "cy": 3360,
+      "x": 8856,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Samostatný formulár poznámky je dostupný pre vybranú hospitalizáciu aj bez predikcie, po chybe alebo pri stave unsupported.\nPôvodný názov: Zapísať klinickú poznámku a plán.",
+      "labelBounds": null
+    },
+    "T42": {
+      "id": "T42",
+      "label": "Zobraziť chybu predikcie",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 7728,
+      "cy": 2184,
+      "x": 7608,
+      "y": 2112,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Zobraziť HTTP chybu alebo timeout bez falošného rizika. Lekár môže zopakovať výpočet alebo ďalej pracovať s hospitalizáciou a poznámkou.\nPôvodný názov: Zobraziť chybu alebo nedostupnosť predikcie.",
+      "labelBounds": null
+    },
+    "T43": {
+      "id": "T43",
+      "label": "Uložiť poznámku do Azure SQL",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 8976,
+      "cy": 2856,
+      "x": 8856,
+      "y": 2784,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "POST /api/hospitalizations/{id}/clinical-notes. Autora určí backend zo session. Uloženie poznámky nezávisí od úspechu predikcie.\nPôvodný názov: Uložiť poznámku a plán do Azure SQL.",
+      "labelBounds": null
+    },
+    "G_Retry": {
+      "id": "G_Retry",
+      "label": "Skúsiť znova?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 7416,
+      "cy": 2184,
+      "x": 7368,
+      "y": 2136,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 7296,
+        "y": 2094,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T44": {
+      "id": "T44",
+      "label": "Odhlásiť lekára",
+      "kind": "userTask",
+      "lane": "Doctor",
+      "cx": 9600,
+      "cy": 3360,
+      "x": 9480,
+      "y": 3288,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Odhlásiť lekára.",
+      "labelBounds": null
+    },
+    "T45": {
+      "id": "T45",
+      "label": "Zrušiť reláciu lekára",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 9600,
+      "cy": 2664,
+      "x": 9480,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pôvodný názov: Zrušiť session lekára.",
+      "labelBounds": null
+    },
+    "End_Doctor": {
+      "id": "End_Doctor",
+      "label": "Odhlásený",
+      "kind": "endEvent",
+      "lane": "App",
+      "cx": 9912,
+      "cy": 2664,
+      "x": 9888,
+      "y": 2640,
+      "w": 48,
+      "h": 48,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 9816,
+        "y": 2700,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "Start_ML": {
+      "id": "Start_ML",
+      "label": "Požiadavka na predikciu",
+      "kind": "startEvent",
+      "lane": "ML",
+      "cx": 7104,
+      "cy": 4176,
+      "x": 7080,
+      "y": 4152,
+      "w": 48,
+      "h": 48,
+      "scope": "P2",
+      "event": {
+        "type": "message",
+        "messageRef": "Message_Request"
+      },
+      "labelBounds": {
+        "x": 7008,
+        "y": 4212,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "T46": {
+      "id": "T46",
+      "label": "Načítať údaje požiadavky",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 7416,
+      "cy": 4176,
+      "x": 7296,
+      "y": 4104,
+      "w": 240,
+      "h": 144,
+      "scope": "P2",
+      "documentation": "Pôvodný názov: Načítať payload požiadavky.",
+      "labelBounds": null
+    },
+    "T47": {
+      "id": "T47",
+      "label": "Overiť schému požiadavky",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 7728,
+      "cy": 4176,
+      "x": 7608,
+      "y": 4104,
+      "w": 240,
+      "h": 144,
+      "scope": "P2",
+      "documentation": "FastAPI/Pydantic overí typy, povinné polia, enum hodnoty a formát diagnóz. Neplatná požiadavka má HTTP 422. Python v aktuálnom projekte neoveruje ML token.\nPôvodný názov: Overiť schému požiadavky.",
+      "labelBounds": null
+    },
+    "T48": {
+      "id": "T48",
+      "label": "Vyhľadať uloženú požiadavku",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 8352,
+      "cy": 4176,
+      "x": 8232,
+      "y": 4104,
+      "w": 240,
+      "h": 144,
+      "scope": "P2",
+      "documentation": "Python vyhľadá existujúcu predikciu podľa request_id. Pri opakovanej požiadavke vráti uložený výsledok bez nového výpočtu.\nPôvodný názov: Vyhľadať uložený request_id.",
+      "labelBounds": null
+    },
+    "SP_Predict": {
+      "id": "SP_Predict",
+      "label": "Vypočítať predikciu rizika",
+      "kind": "subProcess",
+      "lane": "ML",
+      "cx": 7632,
+      "cy": 4812,
+      "x": 6072,
+      "y": 4392,
+      "w": 3120,
+      "h": 840,
+      "scope": "P2",
+      "labelBounds": null
+    },
+    "SP_Error": {
+      "id": "SP_Error",
+      "label": "Chyba výpočtu / DB",
+      "kind": "boundaryEvent",
+      "lane": "ML",
+      "cx": 9144,
+      "cy": 5232,
+      "x": 9120,
+      "y": 5208,
+      "w": 48,
+      "h": 48,
+      "scope": "P2",
+      "attachedToRef": "SP_Predict",
+      "event": {
+        "type": "error",
+        "interrupting": true
+      },
+      "labelBounds": {
+        "x": 8904,
+        "y": 5244,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "T58": {
+      "id": "T58",
+      "label": "Pripraviť chybovú odpoveď",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 9600,
+      "cy": 4944,
+      "x": 9480,
+      "y": 4872,
+      "w": 240,
+      "h": 144,
+      "scope": "P2",
+      "documentation": "FastAPI vráti chybu validácie (422), databázy (503) alebo neočakávanú chybu (500). Samostatná tabuľka neúspešných pokusov sa v aktuálnom kóde neplní.\nPôvodný názov: Pripraviť HTTP chybovú odpoveď.",
+      "labelBounds": null
+    },
+    "T59": {
+      "id": "T59",
+      "label": "Pripraviť dôvody nepodpory",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 6936,
+      "cy": 4944,
+      "x": 6816,
+      "y": 4872,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "make_prediction vráti probability=null, risk_level=null, reasons a status=unsupported. Tento výsledok sa ukladá do tej istej tabuľky predictions ako úspešný výpočet.\nPôvodný názov: Pripraviť výsledok unsupported s dôvodmi.",
+      "labelBounds": null
+    },
+    "T60": {
+      "id": "T60",
+      "label": "Odoslať výsledok alebo chybu",
+      "kind": "sendTask",
+      "lane": "ML",
+      "cx": 9600,
+      "cy": 4176,
+      "x": 9480,
+      "y": 4104,
+      "w": 240,
+      "h": 144,
+      "scope": "P2",
+      "documentation": "Pôvodný názov: Odoslať výsledok alebo chybu.",
+      "labelBounds": null
+    },
+    "End_ML": {
+      "id": "End_ML",
+      "label": "Odpoveď odoslaná",
+      "kind": "endEvent",
+      "lane": "ML",
+      "cx": 9912,
+      "cy": 4176,
+      "x": 9888,
+      "y": 4152,
+      "w": 48,
+      "h": 48,
+      "scope": "P2",
+      "labelBounds": {
+        "x": 9816,
+        "y": 4212,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "SP_Start": {
+      "id": "SP_Start",
+      "label": "",
+      "kind": "startEvent",
+      "lane": "ML",
+      "cx": 6192,
+      "cy": 4584,
+      "x": 6168,
+      "y": 4560,
+      "w": 48,
+      "h": 48,
+      "scope": "SP_Predict",
+      "labelBounds": null
+    },
+    "T49": {
+      "id": "T49",
+      "label": "Overiť podporovaný rozsah",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 6408,
+      "cy": 4584,
+      "x": 6288,
+      "y": 4512,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "check_domain overí rozsahy, kódy a vylúčené spôsoby prepustenia. Nepodporovaný vstup je status=unsupported s HTTP 200, nie chyba služby.\nPôvodný názov: Overiť podporovaný rozsah vstupov.",
+      "labelBounds": null
+    },
+    "G_Input": {
+      "id": "G_Input",
+      "label": "Vstup podporovaný?",
+      "kind": "exclusiveGateway",
+      "lane": "ML",
+      "cx": 6672,
+      "cy": 4584,
+      "x": 6624,
+      "y": 4536,
+      "w": 96,
+      "h": 96,
+      "scope": "SP_Predict",
+      "labelBounds": {
+        "x": 6552,
+        "y": 4494,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T50": {
+      "id": "T50",
+      "label": "Normalizovať kategórie",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 6936,
+      "cy": 4584,
+      "x": 6816,
+      "y": 4512,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "Pôvodný názov: Normalizovať kategórie.",
+      "labelBounds": null
+    },
+    "T51": {
+      "id": "T51",
+      "label": "Spracovať chýbajúce hodnoty",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 7248,
+      "cy": 4584,
+      "x": 7128,
+      "y": 4512,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "Pôvodný názov: Spracovať chýbajúce hodnoty.",
+      "labelBounds": null
+    },
+    "T52": {
+      "id": "T52",
+      "label": "Zostaviť príznaky modelu",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 7560,
+      "cy": 4584,
+      "x": 7440,
+      "y": 4512,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "Pôvodný názov: Zostaviť príznaky modelu.",
+      "labelBounds": null
+    },
+    "T53": {
+      "id": "T53",
+      "label": "Vypočítať pravdepodobnosť",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 7872,
+      "cy": 4584,
+      "x": 7752,
+      "y": 4512,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "Použiť model a fitted pipeline načítané pri štarte služby; model sa pri každom requeste znova nenačítava ani netrénuje.\nPôvodný názov: Vypočítať pravdepodobnosť.",
+      "labelBounds": null
+    },
+    "T54": {
+      "id": "T54",
+      "label": "Vypočítať vysvetľujúce faktory",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 8184,
+      "cy": 4584,
+      "x": 8064,
+      "y": 4512,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "Funkcia explain určí faktory a ich príspevky k výsledku.\nPôvodný názov: Vypočítať vysvetľujúce faktory.",
+      "labelBounds": null
+    },
+    "T55": {
+      "id": "T55",
+      "label": "Určiť úroveň rizika",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 8496,
+      "cy": 4584,
+      "x": 8376,
+      "y": 4512,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "risk_category priradí low, medium alebo high podľa prahov uložených v metadátach. Samostatná kontrola 0 ≤ p ≤ 1 sa v kóde nevykonáva.\nPôvodný názov: Určiť úroveň rizika.",
+      "labelBounds": null
+    },
+    "T56": {
+      "id": "T56",
+      "label": "Pridať verziu modelu a čas",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 8496,
+      "cy": 4872,
+      "x": 8376,
+      "y": 4800,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "Pôvodný názov: Pridať verziu modelu a čas.",
+      "labelBounds": null
+    },
+    "T57": {
+      "id": "T57",
+      "label": "Uložiť výsledok do PostgreSQL",
+      "kind": "serviceTask",
+      "lane": "ML",
+      "cx": 8808,
+      "cy": 4872,
+      "x": 8688,
+      "y": 4800,
+      "w": 240,
+      "h": 144,
+      "scope": "SP_Predict",
+      "documentation": "Pôvodný názov: Uložiť výsledok predikcie do ML DB (PostgreSQL).",
+      "labelBounds": null
+    },
+    "SP_End": {
+      "id": "SP_End",
+      "label": "",
+      "kind": "endEvent",
+      "lane": "ML",
+      "cx": 9048,
+      "cy": 4872,
+      "x": 9024,
+      "y": 4848,
+      "w": 48,
+      "h": 48,
+      "scope": "SP_Predict",
+      "labelBounds": null
+    },
+    "T61": {
+      "id": "T61",
+      "label": "Uložiť väzbu predikcie do Azure SQL",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 8040,
+      "cy": 2664,
+      "x": 7920,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Po úspešnej HTTP odpovedi Python API uložiť PredictionLinks pre výsledok ok aj unsupported. Pri HTTP chybe sa táto väzba nevytvára.\nPôvodný názov: Uložiť väzbu výsledku na hospitalizáciu do Azure SQL.",
+      "labelBounds": null
+    },
+    "T62": {
+      "id": "T62",
+      "label": "Uložiť výsledok do Redis na 24 hodín",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 8352,
+      "cy": 2664,
+      "x": 8232,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Uložiť celý výsledok predikcie do Redis pod kľúčom prediction:hospitalization:{id} s absolútnou platnosťou 24 hodín. Nedostupnosť Redis nesmie zabrániť zobrazeniu výsledku.\nPôvodný názov: Uložiť výsledok do Redis (TTL 24 h).",
+      "labelBounds": null
+    },
+    "G_ExistingHospitalization": {
+      "id": "G_ExistingHospitalization",
+      "label": "Existujúca hospitalizácia?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 3048,
+      "cy": 1632,
+      "x": 3000,
+      "y": 1584,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 2928,
+        "y": 1542,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T63": {
+      "id": "T63",
+      "label": "Vyhľadať predikciu v Redis",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 3360,
+      "cy": 1632,
+      "x": 3240,
+      "y": 1560,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pri otvorení existujúcej hospitalizácie najprv načítať kľúč prediction:hospitalization:{id}. Pri chýbajúcom alebo expirovanom kľúči, prípadne nedostupnosti Redis, pokračovať načítaním uloženého výsledku.\nPôvodný názov: Skontrolovať predikciu v Redis.",
+      "labelBounds": null
+    },
+    "G_CacheHit": {
+      "id": "G_CacheHit",
+      "label": "Predikcia v Redis?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 3672,
+      "cy": 1632,
+      "x": 3624,
+      "y": 1584,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 3552,
+        "y": 1542,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T64": {
+      "id": "T64",
+      "label": "Zobraziť uložený výsledok",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 5232,
+      "cy": 1632,
+      "x": 5112,
+      "y": 1560,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pri status=ok zobraziť riziko a faktory; pri status=unsupported zobraziť dôvody bez percenta. Chyba načítania neblokuje ďalšiu prácu lekára.\nPôvodný názov: Zobraziť uložený výsledok alebo stav predikcie.",
+      "labelBounds": null
+    },
+    "T65": {
+      "id": "T65",
+      "label": "Načítať väzbu predikcie z Azure SQL",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 3672,
+      "cy": 1896,
+      "x": 3552,
+      "y": 1824,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "V PredictionLinks vyhľadať posledný záznam pre HospitalizationId podľa CreatedAt a Id; načítať PredictionId. Ak záznam neexistuje, otvoriť formulár bez predikcie.\nPôvodný názov: Načítať poslednú väzbu predikcie z Azure SQL.",
+      "labelBounds": null
+    },
+    "G_StoredPrediction": {
+      "id": "G_StoredPrediction",
+      "label": "Väzba nájdená?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 3984,
+      "cy": 1896,
+      "x": 3936,
+      "y": 1848,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 3864,
+        "y": 1806,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T66": {
+      "id": "T66",
+      "label": "Načítať výsledok cez Python API",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 4296,
+      "cy": 1896,
+      "x": 4176,
+      "y": 1824,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Použiť GET /predictions/{predictionId}; Python API načíta už uložený výsledok z PostgreSQL. Nejde o POST /predict ani o nový výpočet modelu.\nPôvodný názov: Načítať výsledok z ML DB cez Python API.",
+      "labelBounds": null
+    },
+    "T67": {
+      "id": "T67",
+      "label": "Obnoviť výsledok v Redis na 24 hodín",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 4920,
+      "cy": 1896,
+      "x": 4800,
+      "y": 1824,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Načítaný výsledok uložiť do Redis pod kľúčom hospitalizácie s novou absolútnou platnosťou 24 hodín. Pri chybe Redis pokračovať zobrazením načítaného výsledku.\nPôvodný názov: Obnoviť výsledok v Redis (TTL 24 h).",
+      "labelBounds": null
+    },
+    "G_OpenMerge": {
+      "id": "G_OpenMerge",
+      "label": "",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 5544,
+      "cy": 1632,
+      "x": 5496,
+      "y": 1584,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": null
+    },
+    "G_ResultStatus": {
+      "id": "G_ResultStatus",
+      "label": "Stav výsledku?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 8664,
+      "cy": 2664,
+      "x": 8616,
+      "y": 2616,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 8544,
+        "y": 2574,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T68": {
+      "id": "T68",
+      "label": "Zobraziť dôvody nepodpory",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 8976,
+      "cy": 2136,
+      "x": 8856,
+      "y": 2064,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Pri status=unsupported sa uložený výsledok zachová v PostgreSQL, Azure SQL a Redis. UI zobrazí dôvody a nevymýšľa percento rizika.\nPôvodný názov: Zobraziť dôvody nepodpory bez percenta.",
+      "labelBounds": null
+    },
+    "G_DoctorAction": {
+      "id": "G_DoctorAction",
+      "label": "Ďalšia činnosť?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 5856,
+      "cy": 2664,
+      "x": 5808,
+      "y": 2616,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "documentation": "Činnosti pre už uloženú hospitalizáciu s platným ID. Pacient, hospitalizácia, lieky a poznámky majú samostatné formuláre a samostatné API zápisy.",
+      "labelBounds": {
+        "x": 5736,
+        "y": 2574,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "G_LoadedResult": {
+      "id": "G_LoadedResult",
+      "label": "Výsledok nájdený?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 4608,
+      "cy": 1896,
+      "x": 4560,
+      "y": 1848,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 4488,
+        "y": 1806,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "CacheLoadError": {
+      "id": "CacheLoadError",
+      "label": "Chyba načítania",
+      "kind": "boundaryEvent",
+      "lane": "App",
+      "scope": "P1",
+      "attachedToRef": "T66",
+      "cx": 4368,
+      "cy": 1968,
+      "x": 4344,
+      "y": 1944,
+      "w": 48,
+      "h": 48,
+      "event": {
+        "type": "error",
+        "interrupting": true
+      },
+      "labelBounds": {
+        "x": 4128,
+        "y": 1980,
+        "w": 192,
+        "h": 30
+      }
+    },
+    "G_RequestSchema": {
+      "id": "G_RequestSchema",
+      "label": "Schéma platná?",
+      "kind": "exclusiveGateway",
+      "lane": "ML",
+      "cx": 8040,
+      "cy": 4176,
+      "x": 7992,
+      "y": 4128,
+      "w": 96,
+      "h": 96,
+      "scope": "P2",
+      "labelBounds": {
+        "x": 7920,
+        "y": 4086,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "G_RequestIdExists": {
+      "id": "G_RequestIdExists",
+      "label": "Požiadavka už uložená?",
+      "kind": "exclusiveGateway",
+      "lane": "ML",
+      "cx": 8664,
+      "cy": 4176,
+      "x": 8616,
+      "y": 4128,
+      "w": 96,
+      "h": 96,
+      "scope": "P2",
+      "labelBounds": {
+        "x": 8544,
+        "y": 4086,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "G_HttpSuccess": {
+      "id": "G_HttpSuccess",
+      "label": "Odpoveď úspešná?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 7728,
+      "cy": 2664,
+      "x": 7680,
+      "y": 2616,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 7608,
+        "y": 2574,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T69": {
+      "id": "T69",
+      "label": "Uložiť pacienta do Azure SQL",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 2424,
+      "cy": 2664,
+      "x": 2304,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "PatientForm používa POST /api/patients pri vytvorení a PATCH /api/patients/{id} pri úprave. Backend uloží samostatný záznam pacienta. Pri chybe zostáva formulár otvorený so zadanými údajmi.\nPôvodný názov: Uložiť pacienta do Azure SQL.",
+      "labelBounds": null
+    },
+    "T70": {
+      "id": "T70",
+      "label": "Uložiť liek do Azure SQL",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 5544,
+      "cy": 2424,
+      "x": 5424,
+      "y": 2352,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "POST /api/hospitalizations/{id}/medications. Backend overí existenciu hospitalizácie, údaje lieku a duplicitu. Lieky sa pridávajú až po vytvorení hospitalizácie. Počet NumMedications sa mení samostatne vo formulári hospitalizácie.\nPôvodný názov: Pridať liek ku hospitalizácii v Azure SQL.",
+      "labelBounds": null
+    },
+    "G_PatientSaveMode": {
+      "id": "G_PatientSaveMode",
+      "label": "Nový pacient uložený?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 2736,
+      "cy": 2664,
+      "x": 2688,
+      "y": 2616,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 2616,
+        "y": 2574,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T71": {
+      "id": "T71",
+      "label": "Načítať a overiť vstupy predikcie",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 6480,
+      "cy": 2664,
+      "x": 6360,
+      "y": 2592,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "MlPredictionService načíta hospitalizáciu, pacienta a lieky z Azure SQL. Pred Python volaním overí existenciu záznamu, dátum narodenia a vek pri prijatí, pohlavie, povinné kódy a počty, dĺžku pobytu, hlavnú diagnózu, stavy liekov a boolean hodnoty liečby. Pri chýbajúcom zázname vráti 404, pri neplatných alebo neúplných údajoch 400; Python sa nevolá.\nPôvodný názov: Načítať a overiť vstupy na C# API.",
+      "labelBounds": null
+    },
+    "G_PredictionInputs": {
+      "id": "G_PredictionInputs",
+      "label": "Vstupy pre ML platné?",
+      "kind": "exclusiveGateway",
+      "lane": "App",
+      "cx": 6792,
+      "cy": 2664,
+      "x": 6744,
+      "y": 2616,
+      "w": 96,
+      "h": 96,
+      "scope": "P1",
+      "labelBounds": {
+        "x": 6672,
+        "y": 2574,
+        "w": 240,
+        "h": 30
+      }
+    },
+    "T72": {
+      "id": "T72",
+      "label": "Zobraziť chybu vstupov",
+      "kind": "serviceTask",
+      "lane": "App",
+      "cx": 6792,
+      "cy": 2424,
+      "x": 6672,
+      "y": 2352,
+      "w": 240,
+      "h": 144,
+      "scope": "P1",
+      "documentation": "Zobraziť chybu z C# API bez volania Python, vytvorenia PredictionLinks alebo zápisu výsledku do Redis. Lekár môže opraviť pacienta, hospitalizáciu alebo lieky a skúsiť výpočet znova.\nPôvodný názov: Zobraziť chybu vstupov (400/404).",
+      "labelBounds": null
+    }
+  },
+  "flows": [
+    {
+      "id": "F001",
+      "source": "Start_Admin",
+      "target": "T01",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          336,
+          456
+        ],
+        [
+          432,
+          456
+        ]
+      ]
+    },
+    {
+      "id": "F002",
+      "source": "T01",
+      "target": "T02",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          552,
+          528
+        ],
+        [
+          552,
+          1008
+        ]
+      ]
+    },
+    {
+      "id": "F003",
+      "source": "T02",
+      "target": "G_AdminAuth",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          672,
+          1080
+        ],
+        [
+          816,
+          1080
+        ]
+      ]
+    },
+    {
+      "id": "F004",
+      "source": "G_AdminAuth",
+      "target": "T03",
+      "label": "Nie",
+      "condition": "!valid_admin",
+      "points": [
+        [
+          864,
+          1128
+        ],
+        [
+          864,
+          1248
+        ]
+      ],
+      "label_pos": [
+        896,
+        1166.5
+      ],
+      "labelBounds": {
+        "x": 876,
+        "y": 1152,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F005",
+      "source": "T03",
+      "target": "T01",
+      "label": "Opraviť",
+      "condition": null,
+      "points": [
+        [
+          864,
+          1248
+        ],
+        [
+          864,
+          1212
+        ],
+        [
+          696,
+          1212
+        ],
+        [
+          696,
+          564
+        ],
+        [
+          552,
+          564
+        ],
+        [
+          552,
+          528
+        ]
+      ],
+      "label_pos": [
+        804.5,
+        1187.5
+      ],
+      "labelBounds": {
+        "x": 769,
+        "y": 1173,
+        "w": 71,
+        "h": 29
+      }
+    },
+    {
+      "id": "F006",
+      "source": "G_AdminAuth",
+      "target": "T04",
+      "label": "Áno",
+      "condition": "valid_admin",
+      "points": [
+        [
+          912,
+          1080
+        ],
+        [
+          1056,
+          1080
+        ]
+      ],
+      "label_pos": [
+        957.5,
+        1055.5
+      ],
+      "labelBounds": {
+        "x": 936,
+        "y": 1041,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F007",
+      "source": "T04",
+      "target": "T05",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          1296,
+          1080
+        ],
+        [
+          1368,
+          1080
+        ]
+      ]
+    },
+    {
+      "id": "F008",
+      "source": "T05",
+      "target": "T06",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          1488,
+          1008
+        ],
+        [
+          1488,
+          528
+        ]
+      ]
+    },
+    {
+      "id": "F009",
+      "source": "T06",
+      "target": "T07",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          1608,
+          456
+        ],
+        [
+          1680,
+          456
+        ]
+      ]
+    },
+    {
+      "id": "F010",
+      "source": "T07",
+      "target": "G_AccountMode",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          1920,
+          456
+        ],
+        [
+          2064,
+          456
+        ]
+      ]
+    },
+    {
+      "id": "F011",
+      "source": "G_AccountMode",
+      "target": "T08",
+      "label": "Áno",
+      "condition": "new_account",
+      "points": [
+        [
+          2160,
+          456
+        ],
+        [
+          2268,
+          456
+        ],
+        [
+          2268,
+          408
+        ],
+        [
+          2304,
+          408
+        ]
+      ],
+      "label_pos": [
+        2205.5,
+        431.5
+      ],
+      "labelBounds": {
+        "x": 2184,
+        "y": 417,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F012",
+      "source": "G_AccountMode",
+      "target": "T09",
+      "label": "Nie",
+      "condition": "!new_account",
+      "points": [
+        [
+          2112,
+          504
+        ],
+        [
+          2112,
+          672
+        ],
+        [
+          2304,
+          672
+        ]
+      ],
+      "label_pos": [
+        2144,
+        542.5
+      ],
+      "labelBounds": {
+        "x": 2124,
+        "y": 528,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F013",
+      "source": "T08",
+      "target": "G_AccountMerge",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2544,
+          408
+        ],
+        [
+          2652,
+          408
+        ],
+        [
+          2652,
+          456
+        ],
+        [
+          2688,
+          456
+        ]
+      ]
+    },
+    {
+      "id": "F014",
+      "source": "T09",
+      "target": "G_AccountMerge",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2544,
+          672
+        ],
+        [
+          2652,
+          672
+        ],
+        [
+          2652,
+          456
+        ],
+        [
+          2688,
+          456
+        ]
+      ]
+    },
+    {
+      "id": "F015",
+      "source": "G_AccountMerge",
+      "target": "T10",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2736,
+          504
+        ],
+        [
+          2736,
+          972
+        ],
+        [
+          3048,
+          972
+        ],
+        [
+          3048,
+          1008
+        ]
+      ]
+    },
+    {
+      "id": "F016",
+      "source": "T10",
+      "target": "G_AccountValid",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          3168,
+          1080
+        ],
+        [
+          3312,
+          1080
+        ]
+      ]
+    },
+    {
+      "id": "F017",
+      "source": "G_AccountValid",
+      "target": "T11",
+      "label": "Nie",
+      "condition": "!valid_account",
+      "points": [
+        [
+          3360,
+          1128
+        ],
+        [
+          3360,
+          1248
+        ]
+      ],
+      "label_pos": [
+        3392,
+        1166.5
+      ],
+      "labelBounds": {
+        "x": 3372,
+        "y": 1152,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F018",
+      "source": "T11",
+      "target": "T07",
+      "label": "Opraviť",
+      "condition": null,
+      "points": [
+        [
+          3240,
+          1320
+        ],
+        [
+          1956,
+          1320
+        ],
+        [
+          1956,
+          456
+        ],
+        [
+          1920,
+          456
+        ]
+      ],
+      "label_pos": [
+        3180.5,
+        1295.5
+      ],
+      "labelBounds": {
+        "x": 3145,
+        "y": 1281,
+        "w": 71,
+        "h": 29
+      }
+    },
+    {
+      "id": "F019",
+      "source": "G_AccountValid",
+      "target": "T12",
+      "label": "Áno",
+      "condition": "valid_account",
+      "points": [
+        [
+          3408,
+          1080
+        ],
+        [
+          3552,
+          1080
+        ]
+      ],
+      "label_pos": [
+        3453.5,
+        1055.5
+      ],
+      "labelBounds": {
+        "x": 3432,
+        "y": 1041,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F020",
+      "source": "T12",
+      "target": "T13",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          3792,
+          1080
+        ],
+        [
+          3864,
+          1080
+        ]
+      ]
+    },
+    {
+      "id": "F021",
+      "source": "T13",
+      "target": "T14",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          3984,
+          1008
+        ],
+        [
+          3984,
+          564
+        ],
+        [
+          4296,
+          564
+        ],
+        [
+          4296,
+          528
+        ]
+      ]
+    },
+    {
+      "id": "F022",
+      "source": "T14",
+      "target": "T15",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          4296,
+          528
+        ],
+        [
+          4296,
+          1008
+        ]
+      ]
+    },
+    {
+      "id": "F023",
+      "source": "T15",
+      "target": "End_Admin",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          4416,
+          1080
+        ],
+        [
+          4512,
+          1080
+        ]
+      ]
+    },
+    {
+      "id": "F024",
+      "source": "Start_Doctor",
+      "target": "T16",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          336,
+          3096
+        ],
+        [
+          432,
+          3096
+        ]
+      ]
+    },
+    {
+      "id": "F025",
+      "source": "T16",
+      "target": "T17",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          552,
+          3024
+        ],
+        [
+          552,
+          1704
+        ]
+      ]
+    },
+    {
+      "id": "F026",
+      "source": "T17",
+      "target": "G_DoctorAuth",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          672,
+          1632
+        ],
+        [
+          816,
+          1632
+        ]
+      ]
+    },
+    {
+      "id": "F027",
+      "source": "G_DoctorAuth",
+      "target": "T18",
+      "label": "Nie",
+      "condition": "!valid_doctor",
+      "points": [
+        [
+          864,
+          1680
+        ],
+        [
+          864,
+          1800
+        ]
+      ],
+      "label_pos": [
+        896,
+        1718.5
+      ],
+      "labelBounds": {
+        "x": 876,
+        "y": 1704,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F028",
+      "source": "T18",
+      "target": "T16",
+      "label": "Opraviť",
+      "condition": null,
+      "points": [
+        [
+          864,
+          1944
+        ],
+        [
+          864,
+          2988
+        ],
+        [
+          552,
+          2988
+        ],
+        [
+          552,
+          3024
+        ]
+      ],
+      "label_pos": [
+        911.5,
+        1982.5
+      ],
+      "labelBounds": {
+        "x": 876,
+        "y": 1968,
+        "w": 71,
+        "h": 29
+      }
+    },
+    {
+      "id": "F029",
+      "source": "G_DoctorAuth",
+      "target": "T19",
+      "label": "Áno",
+      "condition": "valid_doctor",
+      "points": [
+        [
+          912,
+          1632
+        ],
+        [
+          1056,
+          1632
+        ]
+      ],
+      "label_pos": [
+        957.5,
+        1607.5
+      ],
+      "labelBounds": {
+        "x": 936,
+        "y": 1593,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F030",
+      "source": "T19",
+      "target": "T20",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          1296,
+          1632
+        ],
+        [
+          1368,
+          1632
+        ]
+      ]
+    },
+    {
+      "id": "F031",
+      "source": "T20",
+      "target": "T21",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          1488,
+          1704
+        ],
+        [
+          1488,
+          3024
+        ]
+      ]
+    },
+    {
+      "id": "F032",
+      "source": "T21",
+      "target": "G_PatientExists",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          1608,
+          3096
+        ],
+        [
+          1752,
+          3096
+        ]
+      ]
+    },
+    {
+      "id": "F033",
+      "source": "G_PatientExists",
+      "target": "T22",
+      "label": "Áno",
+      "condition": "patient_exists",
+      "points": [
+        [
+          1848,
+          3096
+        ],
+        [
+          1992,
+          3096
+        ]
+      ],
+      "label_pos": [
+        1893.5,
+        3071.5
+      ],
+      "labelBounds": {
+        "x": 1872,
+        "y": 3057,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F034",
+      "source": "G_PatientExists",
+      "target": "T23",
+      "label": "Nie",
+      "condition": "!patient_exists",
+      "points": [
+        [
+          1800,
+          3144
+        ],
+        [
+          1800,
+          3360
+        ],
+        [
+          1992,
+          3360
+        ]
+      ],
+      "label_pos": [
+        1832,
+        3182.5
+      ],
+      "labelBounds": {
+        "x": 1812,
+        "y": 3168,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F035",
+      "source": "T22",
+      "target": "G_PatientMerge",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2232,
+          3096
+        ],
+        [
+          2376,
+          3096
+        ]
+      ]
+    },
+    {
+      "id": "F037",
+      "source": "G_PatientMerge",
+      "target": "T24",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2424,
+          3048
+        ],
+        [
+          2424,
+          3012
+        ],
+        [
+          2592,
+          3012
+        ],
+        [
+          2592,
+          1740
+        ],
+        [
+          2736,
+          1740
+        ],
+        [
+          2736,
+          1704
+        ]
+      ]
+    },
+    {
+      "id": "F038",
+      "source": "T24",
+      "target": "T25",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2736,
+          1704
+        ],
+        [
+          2736,
+          1740
+        ],
+        [
+          2880,
+          1740
+        ],
+        [
+          2880,
+          2988
+        ],
+        [
+          2736,
+          2988
+        ],
+        [
+          2736,
+          3024
+        ]
+      ]
+    },
+    {
+      "id": "F039",
+      "source": "T25",
+      "target": "G_ExistingHospitalization",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2736,
+          3024
+        ],
+        [
+          2736,
+          2736
+        ],
+        [
+          3048,
+          2736
+        ],
+        [
+          3048,
+          1680
+        ]
+      ]
+    },
+    {
+      "id": "F041",
+      "source": "T27",
+      "target": "T28",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          3168,
+          3360
+        ],
+        [
+          3240,
+          3360
+        ]
+      ]
+    },
+    {
+      "id": "F044",
+      "source": "T30",
+      "target": "T31",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          3792,
+          3360
+        ],
+        [
+          3864,
+          3360
+        ]
+      ]
+    },
+    {
+      "id": "F045",
+      "source": "T31",
+      "target": "T32",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          4104,
+          3360
+        ],
+        [
+          4176,
+          3360
+        ]
+      ]
+    },
+    {
+      "id": "F046",
+      "source": "T32",
+      "target": "T33",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          4296,
+          3288
+        ],
+        [
+          4296,
+          2736
+        ]
+      ]
+    },
+    {
+      "id": "F047",
+      "source": "T33",
+      "target": "G_ClinicalValid",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          4416,
+          2664
+        ],
+        [
+          4560,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F048",
+      "source": "G_ClinicalValid",
+      "target": "T34",
+      "label": "Nie",
+      "condition": "!valid_clinical",
+      "points": [
+        [
+          4608,
+          2712
+        ],
+        [
+          4608,
+          2748
+        ],
+        [
+          4752,
+          2748
+        ],
+        [
+          4752,
+          2532
+        ],
+        [
+          4608,
+          2532
+        ],
+        [
+          4608,
+          2496
+        ]
+      ],
+      "label_pos": [
+        4652,
+        2772.5
+      ],
+      "labelBounds": {
+        "x": 4632,
+        "y": 2758,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F049",
+      "source": "T34",
+      "target": "T27",
+      "label": "Opraviť",
+      "condition": null,
+      "points": [
+        [
+          4488,
+          2424
+        ],
+        [
+          3204,
+          2424
+        ],
+        [
+          3204,
+          3360
+        ],
+        [
+          3168,
+          3360
+        ]
+      ],
+      "label_pos": [
+        4428.5,
+        2399.5
+      ],
+      "labelBounds": {
+        "x": 4393,
+        "y": 2385,
+        "w": 71,
+        "h": 29
+      }
+    },
+    {
+      "id": "F050",
+      "source": "G_ClinicalValid",
+      "target": "T35",
+      "label": "Áno",
+      "condition": "valid_clinical",
+      "points": [
+        [
+          4656,
+          2664
+        ],
+        [
+          4800,
+          2664
+        ]
+      ],
+      "label_pos": [
+        4701.5,
+        2639.5
+      ],
+      "labelBounds": {
+        "x": 4680,
+        "y": 2625,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F052",
+      "source": "T36",
+      "target": "T37",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          6168,
+          3288
+        ],
+        [
+          6168,
+          2736
+        ]
+      ]
+    },
+    {
+      "id": "F054",
+      "source": "T38",
+      "target": "T39",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7224,
+          2664
+        ],
+        [
+          7296,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F055",
+      "source": "T39",
+      "target": "G_HttpSuccess",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7536,
+          2664
+        ],
+        [
+          7680,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F056",
+      "source": "Timeout",
+      "target": "T42",
+      "label": "Čas vypršal",
+      "condition": null,
+      "points": [
+        [
+          7488,
+          2760
+        ],
+        [
+          7488,
+          2796
+        ],
+        [
+          7584,
+          2796
+        ],
+        [
+          7584,
+          2292
+        ],
+        [
+          7728,
+          2292
+        ],
+        [
+          7728,
+          2256
+        ]
+      ],
+      "label_pos": [
+        7536,
+        2820.5
+      ],
+      "labelBounds": {
+        "x": 7485,
+        "y": 2806,
+        "w": 102,
+        "h": 29
+      }
+    },
+    {
+      "id": "F057",
+      "source": "G_HttpSuccess",
+      "target": "T61",
+      "label": "Áno",
+      "condition": "http_success",
+      "points": [
+        [
+          7776,
+          2664
+        ],
+        [
+          7920,
+          2664
+        ]
+      ],
+      "label_pos": [
+        7821.5,
+        2639.5
+      ],
+      "labelBounds": {
+        "x": 7800,
+        "y": 2625,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F061",
+      "source": "G_HttpSuccess",
+      "target": "T42",
+      "label": "Nie",
+      "condition": "!http_success",
+      "points": [
+        [
+          7728,
+          2712
+        ],
+        [
+          7728,
+          2748
+        ],
+        [
+          7872,
+          2748
+        ],
+        [
+          7872,
+          2292
+        ],
+        [
+          7728,
+          2292
+        ],
+        [
+          7728,
+          2256
+        ]
+      ],
+      "label_pos": [
+        7772,
+        2772.5
+      ],
+      "labelBounds": {
+        "x": 7752,
+        "y": 2758,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F062",
+      "source": "T42",
+      "target": "G_Retry",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7608,
+          2184
+        ],
+        [
+          7464,
+          2184
+        ]
+      ]
+    },
+    {
+      "id": "F063",
+      "source": "G_Retry",
+      "target": "T36",
+      "label": "Áno",
+      "condition": "retry",
+      "points": [
+        [
+          7368,
+          2184
+        ],
+        [
+          6936,
+          2184
+        ],
+        [
+          6936,
+          3360
+        ],
+        [
+          6288,
+          3360
+        ]
+      ],
+      "label_pos": [
+        7322.5,
+        2159.5
+      ],
+      "labelBounds": {
+        "x": 7301,
+        "y": 2145,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F067",
+      "source": "T45",
+      "target": "End_Doctor",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          9720,
+          2664
+        ],
+        [
+          9888,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F097",
+      "source": "T61",
+      "target": "T62",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8160,
+          2664
+        ],
+        [
+          8232,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F099",
+      "source": "G_ExistingHospitalization",
+      "target": "T63",
+      "label": "Áno",
+      "condition": "existing_hospitalization",
+      "points": [
+        [
+          3096,
+          1632
+        ],
+        [
+          3240,
+          1632
+        ]
+      ],
+      "label_pos": [
+        3141.5,
+        1607.5
+      ],
+      "labelBounds": {
+        "x": 3120,
+        "y": 1593,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F100",
+      "source": "G_ExistingHospitalization",
+      "target": "T27",
+      "label": "Nie · nová hospitalizácia",
+      "condition": "!existing_hospitalization",
+      "points": [
+        [
+          3048,
+          1680
+        ],
+        [
+          3048,
+          1716
+        ],
+        [
+          3072,
+          1716
+        ],
+        [
+          3072,
+          3252
+        ],
+        [
+          3048,
+          3252
+        ],
+        [
+          3048,
+          3288
+        ]
+      ],
+      "label_pos": [
+        3184.5,
+        1754.5
+      ],
+      "labelBounds": {
+        "x": 3084,
+        "y": 1740,
+        "w": 201,
+        "h": 29
+      }
+    },
+    {
+      "id": "F101",
+      "source": "T63",
+      "target": "G_CacheHit",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          3480,
+          1632
+        ],
+        [
+          3624,
+          1632
+        ]
+      ]
+    },
+    {
+      "id": "F102",
+      "source": "G_CacheHit",
+      "target": "T64",
+      "label": "Áno",
+      "condition": "cache_hit",
+      "points": [
+        [
+          3720,
+          1632
+        ],
+        [
+          5112,
+          1632
+        ]
+      ],
+      "label_pos": [
+        3765.5,
+        1607.5
+      ],
+      "labelBounds": {
+        "x": 3744,
+        "y": 1593,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F103",
+      "source": "G_CacheHit",
+      "target": "T65",
+      "label": "Nie / Redis nedostupný",
+      "condition": "!cache_hit",
+      "points": [
+        [
+          3672,
+          1680
+        ],
+        [
+          3672,
+          1824
+        ]
+      ],
+      "label_pos": [
+        3777.5,
+        1718.5
+      ],
+      "labelBounds": {
+        "x": 3684,
+        "y": 1704,
+        "w": 187,
+        "h": 29
+      }
+    },
+    {
+      "id": "F104",
+      "source": "T65",
+      "target": "G_StoredPrediction",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          3792,
+          1896
+        ],
+        [
+          3936,
+          1896
+        ]
+      ]
+    },
+    {
+      "id": "F105",
+      "source": "G_StoredPrediction",
+      "target": "T66",
+      "label": "Áno",
+      "condition": "stored_prediction_exists",
+      "points": [
+        [
+          4032,
+          1896
+        ],
+        [
+          4176,
+          1896
+        ]
+      ],
+      "label_pos": [
+        4077.5,
+        1871.5
+      ],
+      "labelBounds": {
+        "x": 4056,
+        "y": 1857,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F106",
+      "source": "G_StoredPrediction",
+      "target": "G_OpenMerge",
+      "label": "Nie · bez predikcie",
+      "condition": "!stored_prediction_exists",
+      "points": [
+        [
+          3984,
+          1944
+        ],
+        [
+          3984,
+          1980
+        ],
+        [
+          4104,
+          1980
+        ],
+        [
+          4104,
+          1920
+        ],
+        [
+          4152,
+          1920
+        ],
+        [
+          4152,
+          1728
+        ],
+        [
+          5520,
+          1728
+        ],
+        [
+          5520,
+          1716
+        ],
+        [
+          5544,
+          1716
+        ],
+        [
+          5544,
+          1680
+        ]
+      ],
+      "label_pos": [
+        4242,
+        1776
+      ],
+      "labelBounds": {
+        "x": 4164,
+        "y": 1761.5,
+        "w": 156,
+        "h": 29
+      }
+    },
+    {
+      "id": "F109",
+      "source": "T64",
+      "target": "G_OpenMerge",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          5352,
+          1632
+        ],
+        [
+          5496,
+          1632
+        ]
+      ]
+    },
+    {
+      "id": "F111",
+      "source": "T62",
+      "target": "G_ResultStatus",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8472,
+          2664
+        ],
+        [
+          8616,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F112",
+      "source": "G_ResultStatus",
+      "target": "T40",
+      "label": "Podporovaný výsledok",
+      "condition": "result_status_ok",
+      "points": [
+        [
+          8712,
+          2664
+        ],
+        [
+          8820,
+          2664
+        ],
+        [
+          8820,
+          2424
+        ],
+        [
+          8856,
+          2424
+        ]
+      ],
+      "label_pos": [
+        8923.5,
+        2625.5
+      ],
+      "labelBounds": {
+        "x": 8832,
+        "y": 2611,
+        "w": 183,
+        "h": 29
+      }
+    },
+    {
+      "id": "F113",
+      "source": "G_ResultStatus",
+      "target": "T68",
+      "label": "Nepodporovaný vstup",
+      "condition": "result_status_unsupported",
+      "points": [
+        [
+          8664,
+          2712
+        ],
+        [
+          8664,
+          2748
+        ],
+        [
+          9132,
+          2748
+        ],
+        [
+          9132,
+          2136
+        ],
+        [
+          9096,
+          2136
+        ]
+      ],
+      "label_pos": [
+        8898,
+        2723.5
+      ],
+      "labelBounds": {
+        "x": 8811,
+        "y": 2709,
+        "w": 174,
+        "h": 29
+      }
+    },
+    {
+      "id": "F114",
+      "source": "G_OpenMerge",
+      "target": "G_DoctorAction",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          5544,
+          1680
+        ],
+        [
+          5544,
+          1716
+        ],
+        [
+          6000,
+          1716
+        ],
+        [
+          6000,
+          2664
+        ],
+        [
+          5904,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F116",
+      "source": "G_DoctorAction",
+      "target": "T36",
+      "label": "Predikcia",
+      "condition": "calculate_prediction",
+      "points": [
+        [
+          5856,
+          2712
+        ],
+        [
+          5856,
+          3252
+        ],
+        [
+          6168,
+          3252
+        ],
+        [
+          6168,
+          3288
+        ]
+      ],
+      "label_pos": [
+        5910,
+        2750.5
+      ],
+      "labelBounds": {
+        "x": 5868,
+        "y": 2736,
+        "w": 84,
+        "h": 29
+      }
+    },
+    {
+      "id": "F117",
+      "source": "G_DoctorAction",
+      "target": "T41",
+      "label": "Poznámka",
+      "condition": "write_note",
+      "points": [
+        [
+          5808,
+          2664
+        ],
+        [
+          5784,
+          2664
+        ],
+        [
+          5784,
+          3204
+        ],
+        [
+          8820,
+          3204
+        ],
+        [
+          8820,
+          3360
+        ],
+        [
+          8856,
+          3360
+        ]
+      ],
+      "label_pos": [
+        5728,
+        2934
+      ],
+      "labelBounds": {
+        "x": 5684,
+        "y": 2919.5,
+        "w": 88,
+        "h": 29
+      }
+    },
+    {
+      "id": "F118",
+      "source": "G_DoctorAction",
+      "target": "T44",
+      "label": "Odhlásiť",
+      "condition": "logout",
+      "points": [
+        [
+          5808,
+          2664
+        ],
+        [
+          5760,
+          2664
+        ],
+        [
+          5760,
+          2892
+        ],
+        [
+          8832,
+          2892
+        ],
+        [
+          8832,
+          3192
+        ],
+        [
+          9444,
+          3192
+        ],
+        [
+          9444,
+          3360
+        ],
+        [
+          9480,
+          3360
+        ]
+      ],
+      "label_pos": [
+        5708,
+        2778
+      ],
+      "labelBounds": {
+        "x": 5668,
+        "y": 2763.5,
+        "w": 80,
+        "h": 29
+      }
+    },
+    {
+      "id": "F119",
+      "source": "T35",
+      "target": "G_DoctorAction",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          5040,
+          2664
+        ],
+        [
+          5076,
+          2664
+        ],
+        [
+          5076,
+          2688
+        ],
+        [
+          5772,
+          2688
+        ],
+        [
+          5772,
+          2664
+        ],
+        [
+          5808,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F120",
+      "source": "T40",
+      "target": "G_DoctorAction",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8856,
+          2424
+        ],
+        [
+          6960,
+          2424
+        ],
+        [
+          6960,
+          2532
+        ],
+        [
+          5676,
+          2532
+        ],
+        [
+          5676,
+          2652
+        ],
+        [
+          5772,
+          2652
+        ],
+        [
+          5772,
+          2664
+        ],
+        [
+          5808,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F121",
+      "source": "T68",
+      "target": "G_DoctorAction",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8856,
+          2136
+        ],
+        [
+          8820,
+          2136
+        ],
+        [
+          8820,
+          2328
+        ],
+        [
+          5724,
+          2328
+        ],
+        [
+          5724,
+          2544
+        ],
+        [
+          5688,
+          2544
+        ],
+        [
+          5688,
+          2640
+        ],
+        [
+          5772,
+          2640
+        ],
+        [
+          5772,
+          2664
+        ],
+        [
+          5808,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F122",
+      "source": "T41",
+      "target": "T43",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8976,
+          3288
+        ],
+        [
+          8976,
+          2928
+        ]
+      ]
+    },
+    {
+      "id": "F123",
+      "source": "T43",
+      "target": "G_DoctorAction",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8856,
+          2856
+        ],
+        [
+          5808,
+          2856
+        ],
+        [
+          5808,
+          2736
+        ],
+        [
+          5736,
+          2736
+        ],
+        [
+          5736,
+          2676
+        ],
+        [
+          5772,
+          2676
+        ],
+        [
+          5772,
+          2664
+        ],
+        [
+          5808,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F124",
+      "source": "G_Retry",
+      "target": "G_DoctorAction",
+      "label": "Nie",
+      "condition": "!retry",
+      "points": [
+        [
+          7416,
+          2232
+        ],
+        [
+          7416,
+          2268
+        ],
+        [
+          6024,
+          2268
+        ],
+        [
+          6024,
+          2784
+        ],
+        [
+          5772,
+          2784
+        ],
+        [
+          5772,
+          2664
+        ],
+        [
+          5808,
+          2664
+        ]
+      ],
+      "label_pos": [
+        7372,
+        2292.5
+      ],
+      "labelBounds": {
+        "x": 7352,
+        "y": 2278,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F125",
+      "source": "T44",
+      "target": "T45",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          9600,
+          3288
+        ],
+        [
+          9600,
+          2736
+        ]
+      ]
+    },
+    {
+      "id": "F126",
+      "source": "T66",
+      "target": "G_LoadedResult",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          4416,
+          1896
+        ],
+        [
+          4560,
+          1896
+        ]
+      ]
+    },
+    {
+      "id": "F127",
+      "source": "G_LoadedResult",
+      "target": "T67",
+      "label": "Áno",
+      "condition": "result_found",
+      "points": [
+        [
+          4656,
+          1896
+        ],
+        [
+          4800,
+          1896
+        ]
+      ],
+      "label_pos": [
+        4701.5,
+        1871.5
+      ],
+      "labelBounds": {
+        "x": 4680,
+        "y": 1857,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F128",
+      "source": "G_LoadedResult",
+      "target": "G_OpenMerge",
+      "label": "Nie",
+      "condition": "!result_found",
+      "points": [
+        [
+          4608,
+          1944
+        ],
+        [
+          4608,
+          1992
+        ],
+        [
+          5544,
+          1992
+        ],
+        [
+          5544,
+          1680
+        ]
+      ],
+      "label_pos": [
+        4640,
+        1968
+      ],
+      "labelBounds": {
+        "x": 4620,
+        "y": 1953.5,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F129",
+      "source": "T67",
+      "target": "T64",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          5040,
+          1896
+        ],
+        [
+          5076,
+          1896
+        ],
+        [
+          5076,
+          1632
+        ],
+        [
+          5112,
+          1632
+        ]
+      ]
+    },
+    {
+      "id": "F130",
+      "source": "CacheLoadError",
+      "target": "T64",
+      "label": "Chyba načítania",
+      "condition": null,
+      "points": [
+        [
+          4368,
+          1992
+        ],
+        [
+          4368,
+          2028
+        ],
+        [
+          5232,
+          2028
+        ],
+        [
+          5232,
+          1704
+        ]
+      ],
+      "label_pos": [
+        4461,
+        2052.5
+      ],
+      "labelBounds": {
+        "x": 4392,
+        "y": 2038,
+        "w": 138,
+        "h": 29
+      }
+    },
+    {
+      "id": "F131",
+      "source": "Start_ML",
+      "target": "T46",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7128,
+          4176
+        ],
+        [
+          7296,
+          4176
+        ]
+      ]
+    },
+    {
+      "id": "F132",
+      "source": "T46",
+      "target": "T47",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7536,
+          4176
+        ],
+        [
+          7608,
+          4176
+        ]
+      ]
+    },
+    {
+      "id": "F133",
+      "source": "T47",
+      "target": "G_RequestSchema",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7848,
+          4176
+        ],
+        [
+          7992,
+          4176
+        ]
+      ]
+    },
+    {
+      "id": "F134",
+      "source": "G_RequestSchema",
+      "target": "T58",
+      "label": "Nie",
+      "condition": "!valid_schema",
+      "points": [
+        [
+          8040,
+          4224
+        ],
+        [
+          8040,
+          4368
+        ],
+        [
+          9576,
+          4368
+        ],
+        [
+          9576,
+          4836
+        ],
+        [
+          9600,
+          4836
+        ],
+        [
+          9600,
+          4872
+        ]
+      ],
+      "label_pos": [
+        8072,
+        4262.5
+      ],
+      "labelBounds": {
+        "x": 8052,
+        "y": 4248,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F135",
+      "source": "G_RequestSchema",
+      "target": "T48",
+      "label": "Áno",
+      "condition": "valid_schema",
+      "points": [
+        [
+          8088,
+          4176
+        ],
+        [
+          8232,
+          4176
+        ]
+      ],
+      "label_pos": [
+        8133.5,
+        4151.5
+      ],
+      "labelBounds": {
+        "x": 8112,
+        "y": 4137,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F136",
+      "source": "T48",
+      "target": "G_RequestIdExists",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8472,
+          4176
+        ],
+        [
+          8616,
+          4176
+        ]
+      ]
+    },
+    {
+      "id": "F137",
+      "source": "G_RequestIdExists",
+      "target": "T60",
+      "label": "Áno · uložená požiadavka",
+      "condition": "request_id_exists",
+      "points": [
+        [
+          8712,
+          4176
+        ],
+        [
+          9480,
+          4176
+        ]
+      ],
+      "label_pos": [
+        8796,
+        4211
+      ],
+      "labelBounds": {
+        "x": 8736,
+        "y": 4186,
+        "w": 120,
+        "h": 50
+      }
+    },
+    {
+      "id": "F138",
+      "source": "G_RequestIdExists",
+      "target": "SP_Predict",
+      "label": "Nie",
+      "condition": "!request_id_exists",
+      "points": [
+        [
+          8664,
+          4224
+        ],
+        [
+          8664,
+          4344
+        ],
+        [
+          7632,
+          4344
+        ],
+        [
+          7632,
+          4392
+        ]
+      ],
+      "label_pos": [
+        8696,
+        4262.5
+      ],
+      "labelBounds": {
+        "x": 8676,
+        "y": 4248,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F139",
+      "source": "SP_Predict",
+      "target": "T60",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          9192,
+          4812
+        ],
+        [
+          9444,
+          4812
+        ],
+        [
+          9444,
+          4176
+        ],
+        [
+          9480,
+          4176
+        ]
+      ]
+    },
+    {
+      "id": "F140",
+      "source": "SP_Error",
+      "target": "T58",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          9144,
+          5256
+        ],
+        [
+          9144,
+          5292
+        ],
+        [
+          9444,
+          5292
+        ],
+        [
+          9444,
+          4944
+        ],
+        [
+          9480,
+          4944
+        ]
+      ]
+    },
+    {
+      "id": "F141",
+      "source": "T58",
+      "target": "T60",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          9600,
+          4872
+        ],
+        [
+          9600,
+          4248
+        ]
+      ]
+    },
+    {
+      "id": "F142",
+      "source": "T60",
+      "target": "End_ML",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          9720,
+          4176
+        ],
+        [
+          9888,
+          4176
+        ]
+      ]
+    },
+    {
+      "id": "F143",
+      "source": "SP_Start",
+      "target": "T49",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          6216,
+          4584
+        ],
+        [
+          6288,
+          4584
+        ]
+      ]
+    },
+    {
+      "id": "F144",
+      "source": "T49",
+      "target": "G_Input",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          6528,
+          4584
+        ],
+        [
+          6624,
+          4584
+        ]
+      ]
+    },
+    {
+      "id": "F145",
+      "source": "G_Input",
+      "target": "T50",
+      "label": "Áno",
+      "condition": "supported_input",
+      "points": [
+        [
+          6720,
+          4584
+        ],
+        [
+          6816,
+          4584
+        ]
+      ],
+      "label_pos": [
+        6765.5,
+        4559.5
+      ],
+      "labelBounds": {
+        "x": 6744,
+        "y": 4545,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F146",
+      "source": "G_Input",
+      "target": "T59",
+      "label": "Nie · nepodporovaný vstup",
+      "condition": "!supported_input",
+      "points": [
+        [
+          6672,
+          4632
+        ],
+        [
+          6672,
+          4836
+        ],
+        [
+          6936,
+          4836
+        ],
+        [
+          6936,
+          4872
+        ]
+      ],
+      "label_pos": [
+        6768.5,
+        4734
+      ],
+      "labelBounds": {
+        "x": 6684,
+        "y": 4709,
+        "w": 169,
+        "h": 50
+      }
+    },
+    {
+      "id": "F147",
+      "source": "T50",
+      "target": "T51",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7056,
+          4584
+        ],
+        [
+          7128,
+          4584
+        ]
+      ]
+    },
+    {
+      "id": "F148",
+      "source": "T51",
+      "target": "T52",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7368,
+          4584
+        ],
+        [
+          7440,
+          4584
+        ]
+      ]
+    },
+    {
+      "id": "F149",
+      "source": "T52",
+      "target": "T53",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7680,
+          4584
+        ],
+        [
+          7752,
+          4584
+        ]
+      ]
+    },
+    {
+      "id": "F150",
+      "source": "T53",
+      "target": "T54",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7992,
+          4584
+        ],
+        [
+          8064,
+          4584
+        ]
+      ]
+    },
+    {
+      "id": "F151",
+      "source": "T54",
+      "target": "T55",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8304,
+          4584
+        ],
+        [
+          8376,
+          4584
+        ]
+      ]
+    },
+    {
+      "id": "F152",
+      "source": "T55",
+      "target": "T56",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8496,
+          4656
+        ],
+        [
+          8496,
+          4800
+        ]
+      ]
+    },
+    {
+      "id": "F153",
+      "source": "T56",
+      "target": "T57",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8616,
+          4872
+        ],
+        [
+          8688,
+          4872
+        ]
+      ]
+    },
+    {
+      "id": "F154",
+      "source": "T59",
+      "target": "T57",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          7056,
+          4944
+        ],
+        [
+          7092,
+          4944
+        ],
+        [
+          7092,
+          4968
+        ],
+        [
+          8652,
+          4968
+        ],
+        [
+          8652,
+          4872
+        ],
+        [
+          8688,
+          4872
+        ]
+      ]
+    },
+    {
+      "id": "F155",
+      "source": "T57",
+      "target": "SP_End",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          8928,
+          4872
+        ],
+        [
+          9024,
+          4872
+        ]
+      ]
+    },
+    {
+      "id": "F156",
+      "source": "T23",
+      "target": "T26",
+      "label": "Nový pacient",
+      "condition": null,
+      "points": [
+        [
+          2232,
+          3360
+        ],
+        [
+          2268,
+          3360
+        ],
+        [
+          2268,
+          3600
+        ],
+        [
+          2304,
+          3600
+        ]
+      ],
+      "label_pos": [
+        2335.5,
+        3398.5
+      ],
+      "labelBounds": {
+        "x": 2280,
+        "y": 3384,
+        "w": 111,
+        "h": 29
+      }
+    },
+    {
+      "id": "F157",
+      "source": "G_DoctorAction",
+      "target": "T26",
+      "label": "Pacient",
+      "condition": "edit_patient",
+      "points": [
+        [
+          5808,
+          2664
+        ],
+        [
+          5748,
+          2664
+        ],
+        [
+          5748,
+          2700
+        ],
+        [
+          5712,
+          2700
+        ],
+        [
+          5712,
+          2736
+        ],
+        [
+          5496,
+          2736
+        ],
+        [
+          5496,
+          3264
+        ],
+        [
+          5088,
+          3264
+        ],
+        [
+          5088,
+          3600
+        ],
+        [
+          2544,
+          3600
+        ]
+      ],
+      "label_pos": [
+        5604,
+        2760.5
+      ],
+      "labelBounds": {
+        "x": 5568.5,
+        "y": 2746,
+        "w": 71,
+        "h": 29
+      }
+    },
+    {
+      "id": "F158",
+      "source": "T26",
+      "target": "T69",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2424,
+          3528
+        ],
+        [
+          2424,
+          3492
+        ],
+        [
+          2496,
+          3492
+        ],
+        [
+          2496,
+          2772
+        ],
+        [
+          2424,
+          2772
+        ],
+        [
+          2424,
+          2736
+        ]
+      ]
+    },
+    {
+      "id": "F159",
+      "source": "T69",
+      "target": "G_PatientSaveMode",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          2544,
+          2664
+        ],
+        [
+          2688,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F160",
+      "source": "G_PatientSaveMode",
+      "target": "G_PatientMerge",
+      "label": "Áno",
+      "condition": "new_patient",
+      "points": [
+        [
+          2736,
+          2712
+        ],
+        [
+          2736,
+          2748
+        ],
+        [
+          2568,
+          2748
+        ],
+        [
+          2568,
+          2988
+        ],
+        [
+          2424,
+          2988
+        ],
+        [
+          2424,
+          3048
+        ]
+      ],
+      "label_pos": [
+        2690.5,
+        2772.5
+      ],
+      "labelBounds": {
+        "x": 2669,
+        "y": 2758,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F161",
+      "source": "G_PatientSaveMode",
+      "target": "G_DoctorAction",
+      "label": "Nie · úprava",
+      "condition": "!new_patient",
+      "points": [
+        [
+          2784,
+          2664
+        ],
+        [
+          4152,
+          2664
+        ],
+        [
+          4152,
+          2556
+        ],
+        [
+          5652,
+          2556
+        ],
+        [
+          5652,
+          2676
+        ],
+        [
+          5724,
+          2676
+        ],
+        [
+          5724,
+          2664
+        ],
+        [
+          5808,
+          2664
+        ]
+      ],
+      "label_pos": [
+        3468,
+        2639.5
+      ],
+      "labelBounds": {
+        "x": 3415,
+        "y": 2625,
+        "w": 106,
+        "h": 29
+      }
+    },
+    {
+      "id": "F162",
+      "source": "G_DoctorAction",
+      "target": "T27",
+      "label": "Hospitalizácia",
+      "condition": "edit_hospitalization",
+      "points": [
+        [
+          5808,
+          2664
+        ],
+        [
+          5772,
+          2664
+        ],
+        [
+          5772,
+          2712
+        ],
+        [
+          5064,
+          2712
+        ],
+        [
+          5064,
+          3456
+        ],
+        [
+          3204,
+          3456
+        ],
+        [
+          3204,
+          3360
+        ],
+        [
+          3168,
+          3360
+        ]
+      ],
+      "label_pos": [
+        5418,
+        2736.5
+      ],
+      "labelBounds": {
+        "x": 5358,
+        "y": 2722,
+        "w": 120,
+        "h": 29
+      }
+    },
+    {
+      "id": "F163",
+      "source": "T28",
+      "target": "T30",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          3480,
+          3360
+        ],
+        [
+          3552,
+          3360
+        ]
+      ]
+    },
+    {
+      "id": "F164",
+      "source": "G_DoctorAction",
+      "target": "T29",
+      "label": "Liek",
+      "condition": "add_medication",
+      "points": [
+        [
+          5904,
+          2664
+        ],
+        [
+          5940,
+          2664
+        ],
+        [
+          5940,
+          2712
+        ],
+        [
+          5976,
+          2712
+        ],
+        [
+          5976,
+          3228
+        ],
+        [
+          5568,
+          3228
+        ],
+        [
+          5568,
+          3252
+        ],
+        [
+          5544,
+          3252
+        ],
+        [
+          5544,
+          3288
+        ]
+      ],
+      "label_pos": [
+        5976,
+        2688
+      ],
+      "labelBounds": {
+        "x": 5952,
+        "y": 2673.5,
+        "w": 48,
+        "h": 29
+      }
+    },
+    {
+      "id": "F165",
+      "source": "T29",
+      "target": "T70",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          5544,
+          3288
+        ],
+        [
+          5544,
+          2496
+        ]
+      ]
+    },
+    {
+      "id": "F166",
+      "source": "T70",
+      "target": "G_DoctorAction",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          5664,
+          2424
+        ],
+        [
+          5700,
+          2424
+        ],
+        [
+          5700,
+          2664
+        ],
+        [
+          5808,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F167",
+      "source": "T37",
+      "target": "T71",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          6288,
+          2664
+        ],
+        [
+          6360,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F168",
+      "source": "T71",
+      "target": "G_PredictionInputs",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          6600,
+          2664
+        ],
+        [
+          6744,
+          2664
+        ]
+      ]
+    },
+    {
+      "id": "F169",
+      "source": "G_PredictionInputs",
+      "target": "T38",
+      "label": "Áno",
+      "condition": "valid_prediction_inputs",
+      "points": [
+        [
+          6840,
+          2664
+        ],
+        [
+          6984,
+          2664
+        ]
+      ],
+      "label_pos": [
+        6885.5,
+        2639.5
+      ],
+      "labelBounds": {
+        "x": 6864,
+        "y": 2625,
+        "w": 43,
+        "h": 29
+      }
+    },
+    {
+      "id": "F170",
+      "source": "G_PredictionInputs",
+      "target": "T72",
+      "label": "Nie",
+      "condition": "!valid_prediction_inputs",
+      "points": [
+        [
+          6792,
+          2712
+        ],
+        [
+          6792,
+          2748
+        ],
+        [
+          6648,
+          2748
+        ],
+        [
+          6648,
+          2556
+        ],
+        [
+          6792,
+          2556
+        ],
+        [
+          6792,
+          2496
+        ]
+      ],
+      "label_pos": [
+        6748,
+        2772.5
+      ],
+      "labelBounds": {
+        "x": 6728,
+        "y": 2758,
+        "w": 40,
+        "h": 29
+      }
+    },
+    {
+      "id": "F171",
+      "source": "T72",
+      "target": "G_DoctorAction",
+      "label": "",
+      "condition": null,
+      "points": [
+        [
+          6672,
+          2424
+        ],
+        [
+          6636,
+          2424
+        ],
+        [
+          6636,
+          2556
+        ],
+        [
+          5712,
+          2556
+        ],
+        [
+          5712,
+          2628
+        ],
+        [
+          5772,
+          2628
+        ],
+        [
+          5772,
+          2664
+        ],
+        [
+          5808,
+          2664
+        ]
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "M_Request",
+      "source": "T38",
+      "target": "Start_ML",
+      "label": "Požiadavka na výpočet",
+      "points": [
+        [
+          7104,
+          2736
+        ],
+        [
+          7104,
+          4152
+        ]
+      ],
+      "label_pos": [
+        7209.5,
+        3444
+      ],
+      "labelBounds": {
+        "x": 7116,
+        "y": 3429.5,
+        "w": 187,
+        "h": 29
+      }
+    },
+    {
+      "id": "M_Response",
+      "source": "T60",
+      "target": "T39",
+      "label": "Výsledok alebo chyba",
+      "points": [
+        [
+          9600,
+          4104
+        ],
+        [
+          9600,
+          4068
+        ],
+        [
+          7608,
+          4068
+        ],
+        [
+          7608,
+          2688
+        ],
+        [
+          7572,
+          2688
+        ],
+        [
+          7572,
+          2664
+        ],
+        [
+          7536,
+          2664
+        ]
+      ],
+      "label_pos": [
+        9487,
+        4043.5
+      ],
+      "labelBounds": {
+        "x": 9398,
+        "y": 4029,
+        "w": 178,
+        "h": 29
+      }
+    }
+  ],
+  "boxes": [
+    {
+      "id": "Participant_IS",
+      "kind": "pool",
+      "label": "HospitalCare · Riadenie hospitalizácií",
+      "processRef": "P1",
+      "x": 48,
+      "y": 216,
+      "w": 10272,
+      "h": 3528
+    },
+    {
+      "id": "Lane_Admin",
+      "kind": "lane",
+      "label": "Administrátor",
+      "lane": "Admin",
+      "parent": "Participant_IS",
+      "x": 96,
+      "y": 288,
+      "w": 10224,
+      "h": 624
+    },
+    {
+      "id": "Lane_App",
+      "kind": "lane",
+      "label": "Informačný systém · Frontend + C# API",
+      "lane": "App",
+      "parent": "Participant_IS",
+      "x": 96,
+      "y": 912,
+      "w": 10224,
+      "h": 2016
+    },
+    {
+      "id": "Lane_Doctor",
+      "kind": "lane",
+      "label": "Lekár",
+      "lane": "Doctor",
+      "parent": "Participant_IS",
+      "x": 96,
+      "y": 2928,
+      "w": 10224,
+      "h": 816
+    },
+    {
+      "id": "Participant_ML",
+      "kind": "pool",
+      "label": "Predikčná služba · Python API + PostgreSQL",
+      "processRef": "P2",
+      "x": 5472,
+      "y": 3936,
+      "w": 4848,
+      "h": 1440
+    },
+    {
+      "id": "Lane_ML",
+      "kind": "lane",
+      "label": "Python ML API",
+      "lane": "ML",
+      "parent": "Participant_ML",
+      "x": 5520,
+      "y": 4008,
+      "w": 4800,
+      "h": 1368
+    }
+  ],
+  "annotations": [
+    {
+      "id": "Annotation_Startup",
+      "scope": "P2",
+      "target": "SP_Predict",
+      "x": 5664,
+      "y": 4536,
+      "w": 312,
+      "h": 456,
+      "text": "Pri štarte služby načítať model, vzorku pre vysvetlenia a metadáta; pripraviť spojenie s PostgreSQL. Pri zlyhaní inicializácie služba neprijíma požiadavky. Počas výpočtu používať už načítaný model.",
+      "points": [
+        [
+          5976,
+          4584
+        ],
+        [
+          6072,
+          4584
+        ]
+      ]
+    }
+  ],
+  "presentation": {
+    "title": "HospitalCare",
+    "subtitle": "Riadenie hospitalizácií a predikcia opätovného prijatia",
+    "width": 10368,
+    "height": 5520,
+    "grid": 24,
+    "theme": {
+      "font": "Arial",
+      "taskFont": 18,
+      "flowFont": 16,
+      "idFont": 12,
+      "text": "#172B40",
+      "muted": "#526477",
+      "line": "#536579",
+      "message": "#245A9A",
+      "border": "#64798D",
+      "taskFill": "#FFFFFF",
+      "gatewayFill": "#FFF6D8",
+      "gatewayStroke": "#94722C",
+      "start": "#23704C",
+      "end": "#A43A3A",
+      "subprocessFill": "#FAFBFE",
+      "laneFill": {
+        "Admin": "#F5F8FD",
+        "App": "#FAFBFC",
+        "Doctor": "#F3FAF8",
+        "ML": "#F7F6FC"
+      }
+    },
+    "sections": [
+      {
+        "x": 312,
+        "label": "01  Prístup a používatelia"
+      },
+      {
+        "x": 2112,
+        "label": "02  Pacienti"
+      },
+      {
+        "x": 3672,
+        "label": "03  Hospitalizácie a lieky"
+      },
+      {
+        "x": 6168,
+        "label": "04  Požiadavka na predikciu"
+      },
+      {
+        "x": 8040,
+        "label": "05  Výsledok a ďalšia práca"
+      }
+    ],
+    "details": [
+      {
+        "id": "01-access-users",
+        "title": "Prístup a používatelia",
+        "nodes": [
+          "Start_Admin",
+          "T01",
+          "T02",
+          "T03",
+          "T04",
+          "T05",
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T10",
+          "T11",
+          "T12",
+          "T13",
+          "T14",
+          "T15",
+          "End_Admin",
+          "G_AdminAuth",
+          "G_AccountMode",
+          "G_AccountMerge",
+          "G_AccountValid"
+        ]
+      },
+      {
+        "id": "02-patients",
+        "title": "Pacienti",
+        "nodes": [
+          "Start_Doctor",
+          "T16",
+          "T17",
+          "G_DoctorAuth",
+          "T18",
+          "T19",
+          "T20",
+          "T21",
+          "G_PatientExists",
+          "T22",
+          "T23",
+          "G_PatientMerge",
+          "T24",
+          "T25",
+          "T26",
+          "T69",
+          "G_PatientSaveMode"
+        ]
+      },
+      {
+        "id": "03-hospitalizations-medications",
+        "title": "Hospitalizácie a lieky",
+        "nodes": [
+          "T27",
+          "T28",
+          "T30",
+          "T31",
+          "T32",
+          "T33",
+          "G_ClinicalValid",
+          "T34",
+          "T35",
+          "T29",
+          "T70",
+          "G_DoctorAction"
+        ]
+      },
+      {
+        "id": "04-prediction-request",
+        "title": "Požiadavka na predikciu",
+        "nodes": [
+          "T36",
+          "T37",
+          "T71",
+          "G_PredictionInputs",
+          "T72",
+          "T38",
+          "T39",
+          "Timeout",
+          "G_HttpSuccess",
+          "T42",
+          "G_Retry"
+        ]
+      },
+      {
+        "id": "05-cache-results",
+        "title": "Uloženie a zobrazenie výsledku",
+        "nodes": [
+          "G_ExistingHospitalization",
+          "T63",
+          "G_CacheHit",
+          "T64",
+          "T65",
+          "G_StoredPrediction",
+          "T66",
+          "CacheLoadError",
+          "G_LoadedResult",
+          "T67",
+          "G_OpenMerge",
+          "T61",
+          "T62",
+          "G_ResultStatus",
+          "T40",
+          "T68",
+          "T41",
+          "T43",
+          "T44",
+          "T45",
+          "End_Doctor"
+        ]
+      },
+      {
+        "id": "06-python",
+        "title": "Predikčná služba Python",
+        "nodes": [
+          "Start_ML",
+          "T46",
+          "T47",
+          "T48",
+          "SP_Predict",
+          "SP_Error",
+          "T58",
+          "T59",
+          "T60",
+          "End_ML",
+          "SP_Start",
+          "T49",
+          "G_Input",
+          "T50",
+          "T51",
+          "T52",
+          "T53",
+          "T54",
+          "T55",
+          "T56",
+          "T57",
+          "SP_End",
+          "G_RequestSchema",
+          "G_RequestIdExists"
+        ]
+      }
+    ]
+  }
+}
