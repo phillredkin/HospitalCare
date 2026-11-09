@@ -1,6 +1,6 @@
 # HospitalCare
 
-Patient and hospitalization management with a Slovak interface for doctors and administrators. Supports patient records, medications, clinical notes and user management. Risk prediction is currently unavailable in the UI.
+Patient and hospitalization management with a Slovak interface for doctors and administrators. Supports patient records, medications, clinical notes, user management and 30-day readmission risk predictions with explanatory factors.
 
 ## Run with Docker
 
@@ -16,7 +16,9 @@ docker compose up -d
 
 Open http://localhost:5173 and sign in with an existing account.
 
-Compose runs the frontend (Nginx), backend, Redis and ML service. Azure SQL `hospitalcare-db` is external; its firewall must allow your public IP. SQL credentials go only to the backend. Startup does not migrate or seed the database.
+Compose runs the frontend (Nginx), backend, Redis, ML service and PostgreSQL for ML results. Azure SQL `hospitalcare-db` is external; its firewall must allow your public IP. SQL credentials go only to the backend. The Azure SQL schema and user accounts must already exist; the ML service creates its PostgreSQL table on startup.
+
+Prediction results are stored in PostgreSQL, linked to hospitalizations in Azure SQL and cached in Redis for 24 hours. Opening a hospitalization loads its saved prediction; recalculation is requested separately.
 
 ```powershell
 # Rebuild after changes
@@ -28,6 +30,6 @@ docker compose logs --tail 100 frontend mvc
 docker compose down
 ```
 
-The backend is also available at http://localhost:5007 and ML at http://localhost:8000. Ports are bound to localhost. This is a local HTTP setup; public hosting requires HTTPS configuration. Stopping the stack keeps Azure SQL data and the backend's Data Protection keys.
+The backend is also available at http://localhost:5007 and ML at http://localhost:8000. Ports are bound to localhost. This is a local HTTP setup; public hosting requires HTTPS configuration. `docker compose down` keeps Azure SQL data, the PostgreSQL data volume and the backend's Data Protection keys.
 
 For frontend features and API limits, see [frontend/README.md](frontend/README.md).
