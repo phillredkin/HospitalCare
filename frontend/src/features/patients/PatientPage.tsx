@@ -10,6 +10,12 @@ import { HospitalizationForm } from '../hospitalizations/HospitalizationForm';
 import { ClinicalNotes } from '../notes/ClinicalNotes';
 import { Medications } from '../medications/Medications';
 import { PatientForm } from './PatientForm';
+import {
+  predictionFactorLabel,
+  predictionFactorValue,
+  predictionReasons,
+  predictionRequestError,
+} from './predictionText';
 import styles from './patients.module.css';
 export function PatientPage() {
   const { patientId: routeId } = useParams();
@@ -39,7 +45,7 @@ function PatientRecord({ id }: { id: number }) {
     top_factors: {
       field: string;
       label: string;
-      value: string | number | null;
+      value: string | number | boolean | null;
       impact: number;
     }[];
   } | null>(null);
@@ -82,7 +88,7 @@ function PatientRecord({ id }: { id: number }) {
         if (response.status === 404) return;
 
         if (!response.ok) {
-          throw new Error(`Nepodarilo sa načítať predikciu (${response.status}).`);
+            throw new Error(predictionRequestError(response.status));
         }
 
         const result = await response.json();
@@ -98,15 +104,18 @@ function PatientRecord({ id }: { id: number }) {
           if (result.status === 'unsupported' || result.probability == null || result.risk_level == null) {
             setPrediction(null);
             setPredictionError(
-              result.reasons?.map((reason: { message: string }) => reason.message).join(' ') ||
-                'Predikciu nie je možné vypočítať pre zadané údaje.',
+              predictionReasons(result.reasons),
             );
             return;
           }
         }
       } catch (error) {
         if (!controller.signal.aborted) {
-          setPredictionError(error instanceof Error ? error.message : 'Nepodarilo sa načítať predikciu.');
+          setPredictionError(
+            error instanceof Error && error.name === 'Error'
+              ? error.message
+              : 'Predikčná služba momentálne nie je dostupná.',
+          );
         }
       }
     };
@@ -146,7 +155,7 @@ function PatientRecord({ id }: { id: number }) {
 
       if (!response.ok) {
         const error = await response.json().catch(() => null);
-        throw new Error(error?.message ?? `Chyba predikcie (${response.status}).`);
+        throw new Error(predictionRequestError(response.status, error?.message));
       }
 
       const result = await response.json();
@@ -161,13 +170,16 @@ function PatientRecord({ id }: { id: number }) {
       if (result.status === 'unsupported' || result.probability == null || result.risk_level == null) {
         setPrediction(null);
         setPredictionError(
-          result.reasons?.map((reason: { message: string }) => reason.message).join(' ') ||
-            'Predikciu nie je možné vypočítať pre zadané údaje.',
+          predictionReasons(result.reasons),
         );
         return;
       }
     } catch (error) {
-      setPredictionError(error instanceof Error ? error.message : 'Predikcia zlyhala.');
+      setPredictionError(
+        error instanceof Error && error.name === 'Error'
+          ? error.message
+          : 'Predikčná služba momentálne nie je dostupná.',
+      );
     } finally {
       setPredictionLoading(false);
     }
@@ -310,14 +322,14 @@ function PatientRecord({ id }: { id: number }) {
                       <div key={`${factor.field}-${index}`} style={{ padding: '10px 0', borderTop: '1px solid #e2e8f0' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}>
                           <span style={{ fontSize: 13 }}>
-                            {factor.field === 'discharge_disposition_id' ? 'Spôsob prepustenia' : factor.label}
+                            {predictionFactorLabel(factor.field)}
                           </span>
                           <span style={{ fontSize: 13, fontWeight: 600, color: factor.impact > 0 ? '#dc2626' : '#16a34a' }}>
                             {factor.impact > 0 ? '+' : ''}{factor.impact.toFixed(4)}
                           </span>
                         </div>
                         <p className="small muted" style={{ marginTop: 4 }}>
-                          Hodnota: {factor.value ?? 'Neuvedené'}
+                          Hodnota: {predictionFactorValue(factor.field, factor.value)}
                         </p>
                       </div>
                     ))}
