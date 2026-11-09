@@ -5,6 +5,7 @@ React + TypeScript + Vite. Slovak interface for doctors and administrators:
 - Login, session restoration, logout and role-based access.
 - Patient search, creation and editing; hospitalization forms and history.
 - Medications, clinical notes, administrator overview and user management.
+- 30-day readmission risk predictions, explanatory factors and loading saved results, with Slovak labels and messages.
 
 ## Run with Docker
 
@@ -19,7 +20,7 @@ Open http://localhost:5173. Nginx serves the built UI and proxies `/api` to the 
 
 ## API limits
 
-Risk prediction is unavailable. Medications support viewing and adding only. The API cannot clear previously populated nullable fields through PATCH; forms explain and block this operation.
+Unsupported prediction inputs show an explanation instead of a risk percentage. Medications support viewing and adding only. The API cannot clear previously populated nullable fields through PATCH; forms explain and block this operation.
 
 ## Source
 
