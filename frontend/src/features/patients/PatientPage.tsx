@@ -11,10 +11,14 @@ import { ClinicalNotes } from '../notes/ClinicalNotes';
 import { Medications } from '../medications/Medications';
 import { PatientForm } from './PatientForm';
 import {
+  type PredictionRecommendation,
   predictionFactorLabel,
   predictionFactorValue,
   predictionReasons,
   predictionRequestError,
+  recommendationAction,
+  recommendationDetails,
+  recommendationReason,
 } from './predictionText';
 import styles from './patients.module.css';
 export function PatientPage() {
@@ -48,6 +52,7 @@ function PatientRecord({ id }: { id: number }) {
       value: string | number | boolean | null;
       impact: number;
     }[];
+    recommendations: PredictionRecommendation[];
   } | null>(null);
   const [predictionLoading, setPredictionLoading] = useState(false);
   const [predictionError, setPredictionError] = useState('');
@@ -99,6 +104,7 @@ function PatientRecord({ id }: { id: number }) {
             probability: result.probability,
             risk_level: result.risk_level,
             top_factors: Array.isArray(result.top_factors) ? result.top_factors : [],
+            recommendations: Array.isArray(result.recommendations) ? result.recommendations : [],
           });
 
           if (result.status === 'unsupported' || result.probability == null || result.risk_level == null) {
@@ -165,6 +171,7 @@ function PatientRecord({ id }: { id: number }) {
         probability: result.probability,
         risk_level: result.risk_level,
         top_factors: Array.isArray(result.top_factors) ? result.top_factors : [],
+        recommendations: Array.isArray(result.recommendations) ? result.recommendations : [],
       });
 
       if (result.status === 'unsupported' || result.probability == null || result.risk_level == null) {
@@ -336,6 +343,30 @@ function PatientRecord({ id }: { id: number }) {
 
                     <p className="small muted" style={{ marginTop: 8 }}>
                       Faktory predstavujú vysvetlenie modelu, nie potvrdené príčiny opätovnej hospitalizácie.
+                    </p>
+                  </div>
+                )}
+
+                {prediction && prediction.hospitalizationId === selected?.id && prediction.recommendations.length > 0 && (
+                  <div style={{ width: '100%', textAlign: 'left', marginBottom: 16 }}>
+                    <strong style={{ display: 'block', fontSize: 13, marginBottom: 12 }}>
+                      Odporúčané opatrenia
+                    </strong>
+
+                    {prediction.recommendations.map((recommendation) => (
+                      <div key={recommendation.code} style={{ padding: '10px 0', borderTop: '1px solid #e2e8f0' }}>
+                        <span style={{ fontSize: 13, fontWeight: 600 }}>{recommendationAction(recommendation)}</span>
+                        <p className="small" style={{ marginTop: 4 }}>
+                          {recommendationDetails(recommendation)}
+                        </p>
+                        <p className="small muted" style={{ marginTop: 2 }}>
+                          {recommendationReason(recommendation)}
+                        </p>
+                      </div>
+                    ))}
+
+                    <p className="small muted" style={{ marginTop: 8 }}>
+                      Odporúčania sú orientačné a nenahrádzajú rozhodnutie lekára.
                     </p>
                   </div>
                 )}

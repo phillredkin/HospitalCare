@@ -7,6 +7,7 @@ import pandas as pd
 
 from readmission.explain import explain
 from readmission.features import INPUT_COLUMNS, risk_category
+from readmission.recommend import recommend
 
 ROOT = Path(__file__).resolve().parent
 ARTIFACTS = ROOT / "artifacts"
@@ -23,14 +24,16 @@ def predict(model, background, meta, records):
     X = pd.DataFrame(records).reindex(columns=INPUT_COLUMNS)
     probs = model.predict_proba(X)[:, 1]
     factors = explain(model, background, X)
-    return [
-        {
+    results = []
+    for record, p, f in zip(records, probs, factors):
+        level = risk_category(p, meta["thresholds"])
+        results.append({
             "probability": round(float(p), 4),
-            "risk_level": risk_category(p, meta["thresholds"]),
+            "risk_level": level,
             "top_factors": f,
-        }
-        for p, f in zip(probs, factors)
-    ]
+            "recommendations": recommend(record, float(p), level),
+        })
+    return results
 
 
 if __name__ == "__main__":

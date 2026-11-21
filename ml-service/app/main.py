@@ -16,6 +16,7 @@ from threadpoolctl import threadpool_limits
 from readmission.domain import check_domain
 from readmission.explain import explain
 from readmission.features import INPUT_COLUMNS, risk_category
+from readmission.recommend import MEASURES, recommend
 
 from .db import Prediction, init_db
 from .schemas import PredictRequest, PredictResponse, api_field_name
@@ -38,10 +39,11 @@ async def lifespan(app):
 
 app = FastAPI(
     title="HospitalCare ML API",
-    version="1.1.0",
+    version="1.2.0",
     description=(
-        "Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge.\n\n"
-        "- `status: ok` - prediction made.\n"
+        "Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge "
+        "and recommends preventive measures.\n\n"
+        "- `status: ok` - prediction made, with `top_factors` and `recommendations`.\n"
         "- `status: unsupported` - input is valid, but outside the range of the training data "
         "(e.g. stay longer than 14 days); no prediction, see `reasons`.\n"
         "- HTTP 422 - invalid input (wrong type, negative number, missing required field).\n\n"
@@ -74,7 +76,8 @@ def health():
     return body
 
 
-@app.get("/model-info", description="Risk thresholds, supported ranges and codes, test metrics.")
+@app.get("/model-info",
+         description="Risk thresholds, supported ranges and codes, test metrics, catalogue of recommended measures.")
 def model_info():
     meta = state["meta"]
     return {
@@ -83,6 +86,7 @@ def model_info():
         "thresholds": meta["thresholds"],
         "domain": meta["domain"],
         "test_metrics": meta["test_metrics"]["hist_gradient_boosting"],
+        "measures": MEASURES,
     }
 
 
@@ -98,6 +102,7 @@ def make_prediction(request):
         "probability": None,
         "risk_level": None,
         "top_factors": [],
+        "recommendations": [],
         "reasons": check_domain(record, meta["domain"]),
         "hospitalization": hospitalization.model_dump(mode="json"),
     }
@@ -116,10 +121,12 @@ def make_prediction(request):
         field = api_field_name(factor["field"])
         factors.append({**factor, "field": field, "value": values.get(field)})
 
+    risk_level = risk_category(probability, meta["thresholds"])
     prediction.update({
         "probability": round(probability, 4),
-        "risk_level": risk_category(probability, meta["thresholds"]),
+        "risk_level": risk_level,
         "top_factors": factors,
+        "recommendations": recommend(record, probability, risk_level),
     })
     return prediction
 
