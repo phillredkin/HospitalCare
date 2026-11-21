@@ -1,7 +1,7 @@
 # HospitalCare ML service
 
-Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge
-and explains which fields raise the risk. Exposed as a FastAPI service for the C# backend.
+Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge,
+explains which fields raise the risk and recommends preventive measures. Exposed as a FastAPI service for the C# backend.
 
 Every prediction is stored in the service's own PostgreSQL database. The C# backend (Azure SQL) keeps only
 `prediction_id` / `request_id` in `PredictionLinks` and fetches the result with `GET /predictions/{prediction_id}`.
@@ -10,9 +10,10 @@ Every prediction is stored in the service's own PostgreSQL database. The C# back
 
 ```
 app/            FastAPI service (main.py), request/response schemas (schemas.py), prediction storage (db.py)
-readmission/    feature engineering, input domain checks, prediction explanations
+readmission/    feature engineering, input domain checks, prediction explanations, recommended measures
 artifacts/      trained model + metadata (loaded by the service, committed to git)
-reports/        evaluation plots (ROC, precision-recall, calibration, feature importance)
+reports/        data plots, model comparison (metrics, ROC, precision-recall, calibration, confusion matrix),
+                feature importance, recommended measures on the test set
 train.py        trains the model and writes artifacts/ and reports/
 predict.py      local prediction example on example_input.json
 data/           training dataset (not in git)
@@ -24,10 +25,10 @@ Full schema: [`docs/api/openapi.json`](../docs/api/openapi.json), or `http://loc
 
 | Endpoint | Description |
 |---|---|
-| `POST /predict` | Risk for one hospitalization: probability, risk level, top factors; the result is stored |
+| `POST /predict` | Risk for one hospitalization: probability, risk level, top factors, recommended measures; the result is stored |
 | `GET /predictions/{prediction_id}` | A stored prediction; `404` if it does not exist |
 | `GET /health` | Service status, model version, database status (`503` if the database is unavailable) |
-| `GET /model-info` | Risk thresholds, supported value ranges and codes, test metrics |
+| `GET /model-info` | Risk thresholds, supported value ranges and codes, test metrics, catalogue of measures |
 
 `POST /predict` responses:
 - `200`, `status: "ok"` - prediction made.
@@ -39,9 +40,33 @@ Full schema: [`docs/api/openapi.json`](../docs/api/openapi.json), or `http://loc
 Sending `POST /predict` again with the same `request_id` (e.g. a retry after a timeout) returns the stored
 prediction instead of creating a new one.
 
+## Recommended measures
+
+Every `status: "ok"` response has `recommendations`, most urgent first. Each item has a stable `code`
+(for translation in the frontend), `action`, `priority`, `deadline_days` (0 = before discharge), `cost`,
+`triggers` (codes) and `reason` (text). The rules are in `readmission/recommend.py`:
+
+| `code` | Cost | When | Deadline |
+|---|---|---|---|
+| `discharge_education` | low | every patient | before discharge |
+| `follow_up_call` | low | medium or high risk | 3 days (medium), 2 days (high) |
+| `follow_up_visit` | medium | medium or high risk | 14 days (medium), 7 days (high) |
+| `medication_review` | medium | medium or high risk and medication changed or 20+ medications | before discharge |
+| `diabetes_specialist` | medium | HbA1c >8 / glucose >300 at any risk; HbA1c >7 / glucose >200 at medium or high risk | 30 days, 14 days (high) |
+| `care_coordinator` | high | high risk and 2+ hospitalizations or emergency visits in the previous year | before discharge |
+
+Cheap measures are given broadly, expensive ones only where the risk justifies them; higher risk means shorter
+deadlines, and `priority` (= risk level) orders the work list across patients. `train.py` checks the rules on the
+test set and saves how many patients get each measure and how often they are actually readmitted
+(`test_recommendations` in `artifacts/model_meta.json`, `reports/recommendations.png`).
+
+`triggers` codes: `low_risk`, `medium_risk`, `high_risk`, `frequent_admissions`, `frequent_emergency`,
+`poor_glucose_control`, `elevated_glucose`, `medication_change`, `many_medications`.
+
 ## Database
 
 The service reads the connection string from `DATABASE_URL` and creates the `predictions` table on startup.
+Columns added in newer versions (e.g. `recommendations`) are added to an existing table automatically.
 
 - **Docker Compose** starts a local Postgres (`ml-db`) and points the service to it - nothing to configure.
 - **Hosted Postgres** (Neon, Render, Azure): set `ML_DATABASE_URL` in the root `.env`, e.g.
@@ -71,6 +96,18 @@ The service loads the model with pickle, so `scikit-learn` in `requirements.txt`
 
 ## Model
 
-HistGradientBoosting on ~99k encounters, split by patient (80% train / 20% test).
-Test ROC-AUC 0.68; the `high` risk group (6% of patients) is readmitted in 33% of cases vs 11% on average.
-Details in `artifacts/model_meta.json`.
+~99k encounters, split by patient (80% train / 20% test). Three algorithms are trained on the same split and
+compared on the same test set; the service uses HistGradientBoosting.
+
+| Test set (19,773 encounters) | HistGradientBoosting | RandomForest | LogisticRegression |
+|---|---|---|---|
+| ROC-AUC | **0.676** | 0.672 | 0.675 |
+| PR-AUC | **0.242** | 0.225 | 0.222 |
+| Brier score (lower is better) | **0.0951** | 0.0962 | 0.0959 |
+| Readmitted in the top 10% by risk | **28.6%** | 25.6% | 26.6% |
+| F1 at the high-risk threshold | **0.235** | 0.143 | 0.219 |
+| Accuracy at the high-risk threshold | 0.865 | 0.877 | 0.856 |
+
+Accuracy is not used to pick the model: only 11% of patients are readmitted, so answering "no" for everyone gives
+0.886. The `high` risk group (6% of patients) is readmitted in 33% of cases vs 11% on average.
+All metrics: `reports/model_comparison.csv` and `artifacts/model_meta.json`.

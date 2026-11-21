@@ -132,6 +132,25 @@ class Reason(BaseModel):
     message: str = Field(description="Human-readable message")
 
 
+Level = Literal["low", "medium", "high"]
+
+
+class Recommendation(BaseModel):
+    code: Literal[
+        "care_coordinator", "follow_up_visit", "medication_review", "diabetes_specialist", "follow_up_call",
+        "discharge_education",
+    ] = Field(description="Measure type; full catalogue with cost and rules in GET /model-info")
+    action: str = Field(description="What to do (English)")
+    priority: Level = Field(description="Equals the patient's risk level; high-risk patients are handled first")
+    deadline_days: int = Field(description="Days after discharge to complete the measure; 0 = before discharge")
+    cost: Level = Field(description="Relative cost of the measure")
+    triggers: list[Literal[
+        "low_risk", "medium_risk", "high_risk", "frequent_admissions", "frequent_emergency",
+        "poor_glucose_control", "elevated_glucose", "medication_change", "many_medications",
+    ]] = Field(description="Why the measure was chosen: risk level and patient data")
+    reason: str = Field(description="Human-readable justification (English)")
+
+
 class PredictResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -140,10 +159,19 @@ class PredictResponse(BaseModel):
     model_version: str
     status: Literal["ok", "unsupported"] = Field(description="unsupported = input is outside the model's range")
     probability: float | None = Field(description="Probability of readmission within 30 days; null if unsupported")
-    risk_level: Literal["low", "medium", "high"] | None
+    risk_level: Level | None
     top_factors: list[Factor] = Field(description="Up to 3 fields that raise the risk most")
+    recommendations: list[Recommendation] = Field(
+        default_factory=list,
+        description="Preventive measures, most urgent first; empty when unsupported or for predictions made before "
+                    "recommendations were added")
     reasons: list[Reason] = Field(description="Why there is no prediction (only when status = unsupported)")
     created_at: datetime = Field(description="When the prediction was made (UTC)")
+
+    @field_validator("recommendations", mode="before")
+    @classmethod
+    def _none_as_empty(cls, value):
+        return [] if value is None else value
 
     @field_validator("created_at")
     @classmethod

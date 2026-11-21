@@ -9,17 +9,18 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.ticker import PercentFormatter
 import pandas as pd
 import sklearn
 from sklearn.calibration import calibration_curve
 from sklearn.compose import ColumnTransformer
-from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.inspection import permutation_importance
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
-    PrecisionRecallDisplay, RocCurveDisplay, average_precision_score, brier_score_loss,
-    precision_score, recall_score, roc_auc_score,
+    ConfusionMatrixDisplay, PrecisionRecallDisplay, RocCurveDisplay, accuracy_score, average_precision_score,
+    brier_score_loss, f1_score, precision_score, recall_score, roc_auc_score,
 )
 from sklearn.model_selection import (
     GroupShuffleSplit, RandomizedSearchCV, StratifiedGroupKFold, cross_val_score,
@@ -33,6 +34,7 @@ from readmission.features import (
     CATEGORICAL_FEATURES, DIAG_INPUTS, EXCLUDED_DISCHARGE_IDS, INPUT_COLUMNS, NUMERIC_FEATURES,
     RISK_LEVELS, FeatureBuilder, risk_category,
 )
+from readmission.recommend import MEASURES, recommend
 
 ROOT = Path(__file__).resolve().parent
 DATASET_URL = "https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008"
@@ -82,6 +84,18 @@ def make_hgb():
     return Pipeline([("features", FeatureBuilder()), ("prep", prep), ("model", model)])
 
 
+def make_rf():
+    encoder = OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1, encoded_missing_value=-1,
+                             min_frequency=30, max_categories=60)
+    prep = ColumnTransformer([
+        ("cat", encoder, CATEGORICAL_FEATURES),
+        ("num", SimpleImputer(strategy="median"), NUMERIC_FEATURES),
+    ])
+    model = RandomForestClassifier(n_estimators=300, min_samples_leaf=50, max_features="sqrt",
+                                   n_jobs=-1, random_state=RANDOM_STATE)
+    return Pipeline([("features", FeatureBuilder()), ("prep", prep), ("model", model)])
+
+
 def evaluate(y, p, thresholds):
     y, p = np.asarray(y), np.asarray(p)
     top10 = np.argsort(-p)[: len(p) // 10]
@@ -94,9 +108,28 @@ def evaluate(y, p, thresholds):
     }
     for level in ("medium", "high"):
         pred = p >= thresholds[level]
+        metrics[f"accuracy_at_{level}"] = accuracy_score(y, pred)
         metrics[f"precision_at_{level}"] = precision_score(y, pred, zero_division=0)
         metrics[f"recall_at_{level}"] = recall_score(y, pred, zero_division=0)
+        metrics[f"f1_at_{level}"] = f1_score(y, pred, zero_division=0)
     return {k: round(float(v), 4) for k, v in metrics.items()}
+
+
+def recommendation_summary(X, y, p, thresholds):
+    y = np.asarray(y)
+    hits = {code: np.zeros(len(X), dtype=bool) for code in MEASURES}
+    for i, (record, prob) in enumerate(zip(X.to_dict("records"), p)):
+        for rec in recommend(record, prob, risk_category(prob, thresholds)):
+            hits[rec["code"]][i] = True
+    return {
+        code: {
+            "patients": int(mask.sum()),
+            "share": round(float(mask.mean()), 4),
+            "readmitted_rate": round(float(y[mask].mean()), 4) if mask.any() else None,
+            "cost": MEASURES[code]["cost"],
+        }
+        for code, mask in hits.items()
+    }
 
 
 def risk_table(y, p, thresholds):
@@ -117,6 +150,102 @@ def _save(fig, name):
     fig.tight_layout()
     fig.savefig(REPORTS / name, dpi=150)
     plt.close(fig)
+
+
+def _label_bars(ax, bars, labels):
+    for bar, label in zip(bars, labels):
+        ax.annotate(label, (bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                    ha="center", va="bottom", fontsize=8, xytext=(0, 2), textcoords="offset points")
+
+
+def save_data_plots(df):
+    REPORTS.mkdir(parents=True, exist_ok=True)
+
+    counts = df["readmitted"].value_counts().reindex(["NO", ">30", "<30"])
+    fig, ax = plt.subplots(figsize=(6, 4.5))
+    bars = ax.bar(["Not readmitted", "After 30+ days", "Within 30 days"], counts.values,
+                  color=["#9aa5b1", "#9aa5b1", "#d9534f"])
+    _label_bars(ax, bars, [f"{n:,}\n({n / counts.sum():.1%})" for n in counts.values])
+    ax.set_ylabel("Hospitalizations")
+    ax.set_title("Readmission outcome (target: within 30 days)")
+    ax.margins(y=0.15)
+    _save(fig, "data_target_distribution.png")
+
+    target = df["readmitted"] == "<30"
+    bucket = df["number_inpatient"].clip(upper=5).map(lambda v: "5+" if v >= 5 else str(v))
+    order = ["0", "1", "2", "3", "4", "5+"]
+    rate = target.groupby(bucket).mean().reindex(order)
+    size = bucket.value_counts().reindex(order)
+    fig, ax = plt.subplots(figsize=(6, 4.5))
+    bars = ax.bar(order, rate.values, color="#4a78b5")
+    _label_bars(ax, bars, [f"{r:.0%}\nn={n:,}" for r, n in zip(rate.values, size.values)])
+    ax.axhline(target.mean(), ls="--", color="grey", lw=1, label=f"Average ({target.mean():.1%})")
+    ax.set_xlabel("Hospitalizations in the year before admission")
+    ax.set_ylabel("Readmitted within 30 days")
+    ax.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+    ax.set_title("Readmission rate by prior hospitalizations")
+    ax.margins(y=0.15)
+    ax.legend(loc="upper left")
+    _save(fig, "data_readmission_by_prior_inpatient.png")
+
+
+def save_confusion_plot(y, probs, thresholds):
+    y = np.asarray(y)
+    names = list(probs)
+    fig, axes = plt.subplots(1, len(names), figsize=(4.2 * len(names), 4))
+    for ax, name in zip(axes, names):
+        ConfusionMatrixDisplay.from_predictions(
+            y, probs[name] >= thresholds["high"], display_labels=["No", "Yes"], ax=ax, colorbar=False,
+            values_format=",d", cmap="Blues")
+        ax.set_title(name)
+        ax.set_xlabel("Predicted high risk")
+        ax.set_ylabel("Readmitted within 30 days")
+    fig.suptitle(f"Confusion matrix at the high-risk threshold ({thresholds['high']:.0%})")
+    _save(fig, "confusion_matrix.png")
+
+
+def save_metrics_plot(metrics, base_rate):
+    names = list(metrics)
+    shown = {"roc_auc": "ROC-AUC", "pr_auc": "PR-AUC", "f1_at_high": "F1 (high)", "accuracy_at_high": "Accuracy (high)"}
+    x = np.arange(len(shown))
+    width = 0.8 / len(names)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for i, name in enumerate(names):
+        values = [metrics[name][k] for k in shown]
+        bars = ax.bar(x + (i - (len(names) - 1) / 2) * width, values, width, label=name)
+        _label_bars(ax, bars, [f"{v:.2f}" for v in values])
+    best = max(names, key=lambda n: metrics[n]["pr_auc"])
+    ax.set_xticks(x, shown.values())
+    ax.set_ylim(0, 1.05)
+    ax.set_title(f"Model comparison on the test set: best = {best}")
+    ax.legend(loc="upper left")
+    fig.text(0.5, 0.01, f"Accuracy is misleading here: answering 'No' for everyone gives {1 - base_rate:.2f}, "
+                        f"because only {base_rate:.0%} of patients are readmitted.",
+             ha="center", fontsize=8, color="dimgrey")
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    fig.savefig(REPORTS / "model_comparison.png", dpi=150)
+    plt.close(fig)
+
+
+def save_recommendation_plot(summary, base_rate):
+    rows = sorted(((c, s) for c, s in summary.items() if s["patients"]), key=lambda cs: cs[1]["readmitted_rate"])
+    fig, ax = plt.subplots(figsize=(7.5, 4.5))
+    colors = {"low": "#7fb77e", "medium": "#f0ad4e", "high": "#d9534f"}
+    bars = ax.barh([c.replace("_", " ").capitalize() for c, _ in rows], [s["readmitted_rate"] for _, s in rows],
+                   color=[colors[s["cost"]] for _, s in rows])
+    for bar, (_, s) in zip(bars, rows):
+        ax.annotate(f"{s['share']:.0%} of patients, {s['readmitted_rate']:.0%} readmitted",
+                    (bar.get_width(), bar.get_y() + bar.get_height() / 2),
+                    va="center", fontsize=8, xytext=(3, 0), textcoords="offset points")
+    ax.axvline(base_rate, ls="--", color="grey", lw=1)
+    ax.set_xlim(0, max(s["readmitted_rate"] for _, s in rows) * 1.6)
+    ax.xaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+    ax.set_xlabel("Readmitted within 30 days among patients who get the measure")
+    ax.set_title("Recommended measures on the test set (colour = cost)")
+    handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in colors.values()]
+    ax.legend(handles + [plt.Line2D([], [], ls="--", color="grey")],
+              [f"{k} cost" for k in colors] + ["Average"], loc="lower right")
+    _save(fig, "recommendations.png")
 
 
 def save_plots(y, probs, importance):
@@ -170,6 +299,7 @@ def main():
     y = (df["readmitted"] == "<30").astype(int)
     groups = df["patient_nbr"]
     print(f"Encounters: {len(df)}, patients: {groups.nunique()}, readmitted < 30 days: {y.mean():.3f}")
+    save_data_plots(df)
 
     splitter = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=RANDOM_STATE)
     train_idx, test_idx = next(splitter.split(X, y, groups))
@@ -178,13 +308,19 @@ def main():
     g_tr = groups.iloc[train_idx]
     cv = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
 
-    print("\n[1/3] Logistic regression (baseline)")
+    print("\n[1/4] Logistic regression (baseline)")
     logreg = make_logreg()
     lr_cv = cross_val_score(logreg, X_tr, y_tr, groups=g_tr, cv=cv, scoring="roc_auc")
     logreg.fit(X_tr, y_tr)
     print(f"  CV ROC-AUC: {lr_cv.mean():.4f} +- {lr_cv.std():.4f}")
 
-    print(f"\n[2/3] HistGradientBoosting: hyperparameter search ({N_SEARCH_ITER} candidates x 5 folds)")
+    print("\n[2/4] Random forest")
+    forest = make_rf()
+    rf_cv = cross_val_score(forest, X_tr, y_tr, groups=g_tr, cv=cv, scoring="roc_auc")
+    forest.fit(X_tr, y_tr)
+    print(f"  CV ROC-AUC: {rf_cv.mean():.4f} +- {rf_cv.std():.4f}")
+
+    print(f"\n[3/4] HistGradientBoosting: hyperparameter search ({N_SEARCH_ITER} candidates x 5 folds)")
     search = RandomizedSearchCV(make_hgb(), PARAM_SPACE, n_iter=N_SEARCH_ITER, scoring="roc_auc",
                                 cv=cv, random_state=RANDOM_STATE, verbose=1)
     search.fit(X_tr, y_tr, groups=g_tr)
@@ -195,16 +331,23 @@ def main():
     base_rate = float(y_tr.mean())
     thresholds = {"medium": round(base_rate, 2), "high": round(2 * base_rate, 2)}
 
-    print("\n[3/3] Evaluation on the held-out 20% of patients")
-    p_hgb = model.predict_proba(X_te)[:, 1]
-    p_lr = logreg.predict_proba(X_te)[:, 1]
+    print("\n[4/4] Evaluation on the held-out 20% of patients")
+    probs = {
+        "HistGradientBoosting": model.predict_proba(X_te)[:, 1],
+        "RandomForest": forest.predict_proba(X_te)[:, 1],
+        "LogisticRegression": logreg.predict_proba(X_te)[:, 1],
+    }
+    p_hgb = probs["HistGradientBoosting"]
     metrics = {
         "hist_gradient_boosting": evaluate(y_te, p_hgb, thresholds),
-        "logistic_regression": evaluate(y_te, p_lr, thresholds),
+        "random_forest": evaluate(y_te, probs["RandomForest"], thresholds),
+        "logistic_regression": evaluate(y_te, probs["LogisticRegression"], thresholds),
     }
-    print(f"  {'':24}{'HGB':>10}{'LogReg':>10}")
-    for k, v in metrics["hist_gradient_boosting"].items():
-        print(f"  {k:24}{v:>10.4f}{metrics['logistic_regression'][k]:>10.4f}")
+    comparison = pd.DataFrame(metrics)
+    comparison.columns = list(probs)
+    print(comparison.to_string(float_format=lambda v: f"{v:.4f}"))
+    REPORTS.mkdir(parents=True, exist_ok=True)
+    comparison.to_csv(REPORTS / "model_comparison.csv", float_format="%.4f")
 
     levels = risk_table(y_te, p_hgb, thresholds)
     print(f"\n  Risk levels (thresholds {thresholds}):")
@@ -212,11 +355,20 @@ def main():
         print(f"    {level:7} patients {row['count']:6} ({row['share']:.1%}), "
               f"readmitted < 30 days: {row['readmitted_rate']}")
 
+    recommendations = recommendation_summary(X_te, y_te, p_hgb, thresholds)
+    print("\n  Recommended measures on the test set:")
+    for code, row in recommendations.items():
+        print(f"    {code:20} cost {row['cost']:6} patients {row['patients']:6} ({row['share']:.1%}), "
+              f"readmitted < 30 days: {row['readmitted_rate']}")
+
     print("\n  Computing field importance (permutation importance)...")
     imp = permutation_importance(model, X_te, y_te, scoring="roc_auc", n_repeats=5, random_state=RANDOM_STATE)
     importance = pd.Series(imp.importances_mean, index=X_te.columns).sort_values(ascending=False)
     print(importance.head(10).round(4).to_string())
-    save_plots(y_te, {"HistGradientBoosting": p_hgb, "LogisticRegression": p_lr}, importance)
+    save_plots(y_te, probs, importance)
+    save_confusion_plot(y_te, probs, thresholds)
+    save_metrics_plot(dict(zip(probs, metrics.values())), float(y_te.mean()))
+    save_recommendation_plot(recommendations, float(y_te.mean()))
 
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, ARTIFACTS / "readmission_model.joblib")
@@ -241,11 +393,13 @@ def main():
         "n_test": len(X_te),
         "cv_roc_auc": {
             "hist_gradient_boosting": round(float(search.best_score_), 4),
+            "random_forest": round(float(rf_cv.mean()), 4),
             "logistic_regression": round(float(lr_cv.mean()), 4),
         },
         "best_params": search.best_params_,
         "test_metrics": metrics,
         "test_risk_levels": levels,
+        "test_recommendations": recommendations,
         "permutation_importance_top15": importance.head(15).round(4).to_dict(),
     }
     (ARTIFACTS / "model_meta.json").write_text(

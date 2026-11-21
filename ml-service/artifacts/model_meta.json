@@ -1,6 +1,6 @@
 {
-  "model_version": "readmission-20261013-0622",
-  "trained_at": "2026-10-13T06:22:41+00:00",
+  "model_version": "readmission-20261121-1332",
+  "trained_at": "2026-11-21T13:32:08+00:00",
   "sklearn_version": "1.9.1",
   "target": "readmitted == '<30'",
   "input_columns": [
@@ -215,6 +215,7 @@
   "n_test": 19773,
   "cv_roc_auc": {
     "hist_gradient_boosting": 0.6702,
+    "random_forest": 0.6643,
     "logistic_regression": 0.6618
   },
   "best_params": {
@@ -230,10 +231,29 @@
       "brier": 0.0951,
       "base_rate": 0.1135,
       "top10pct_rate": 0.2863,
+      "accuracy_at_medium": 0.6252,
       "precision_at_medium": 0.1738,
       "recall_at_medium": 0.6132,
+      "f1_at_medium": 0.2708,
+      "accuracy_at_high": 0.8654,
       "precision_at_high": 0.3309,
-      "recall_at_high": 0.1823
+      "recall_at_high": 0.1823,
+      "f1_at_high": 0.2351
+    },
+    "random_forest": {
+      "roc_auc": 0.6721,
+      "pr_auc": 0.2245,
+      "brier": 0.0962,
+      "base_rate": 0.1135,
+      "top10pct_rate": 0.2559,
+      "accuracy_at_medium": 0.5801,
+      "precision_at_medium": 0.1672,
+      "recall_at_medium": 0.6783,
+      "f1_at_medium": 0.2683,
+      "accuracy_at_high": 0.8766,
+      "precision_at_high": 0.3377,
+      "recall_at_high": 0.0909,
+      "f1_at_high": 0.1433
     },
     "logistic_regression": {
       "roc_auc": 0.6745,
@@ -241,10 +261,14 @@
       "brier": 0.0959,
       "base_rate": 0.1135,
       "top10pct_rate": 0.2656,
+      "accuracy_at_medium": 0.6473,
       "precision_at_medium": 0.1801,
       "recall_at_medium": 0.5931,
+      "f1_at_medium": 0.2763,
+      "accuracy_at_high": 0.8559,
       "precision_at_high": 0.2847,
-      "recall_at_high": 0.1783
+      "recall_at_high": 0.1783,
+      "f1_at_high": 0.2192
     }
   },
   "test_risk_levels": {
@@ -262,6 +286,44 @@
       "count": 1236,
       "share": 0.0625,
       "readmitted_rate": 0.3309
+    }
+  },
+  "test_recommendations": {
+    "care_coordinator": {
+      "patients": 821,
+      "share": 0.0415,
+      "readmitted_rate": 0.3252,
+      "cost": "high"
+    },
+    "follow_up_visit": {
+      "patients": 7918,
+      "share": 0.4004,
+      "readmitted_rate": 0.1738,
+      "cost": "medium"
+    },
+    "medication_review": {
+      "patients": 5025,
+      "share": 0.2541,
+      "readmitted_rate": 0.1773,
+      "cost": "medium"
+    },
+    "diabetes_specialist": {
+      "patients": 2316,
+      "share": 0.1171,
+      "readmitted_rate": 0.1205,
+      "cost": "medium"
+    },
+    "follow_up_call": {
+      "patients": 7918,
+      "share": 0.4004,
+      "readmitted_rate": 0.1738,
+      "cost": "low"
+    },
+    "discharge_education": {
+      "patients": 19773,
+      "share": 1.0,
+      "readmitted_rate": 0.1135,
+      "cost": "low"
     }
   },
   "permutation_importance_top15": {

@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "HospitalCare ML API",
-    "description": "Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge.\n\n- `status: ok` - prediction made.\n- `status: unsupported` - input is valid, but outside the range of the training data (e.g. stay longer than 14 days); no prediction, see `reasons`.\n- HTTP 422 - invalid input (wrong type, negative number, missing required field).\n\nEvery prediction is stored; fetch it later with `GET /predictions/{prediction_id}`. Repeating `POST /predict` with the same `request_id` returns the stored prediction.",
-    "version": "1.1.0"
+    "description": "Predicts the risk that a diabetic patient is readmitted to hospital within 30 days of discharge and recommends preventive measures.\n\n- `status: ok` - prediction made, with `top_factors` and `recommendations`.\n- `status: unsupported` - input is valid, but outside the range of the training data (e.g. stay longer than 14 days); no prediction, see `reasons`.\n- HTTP 422 - invalid input (wrong type, negative number, missing required field).\n\nEvery prediction is stored; fetch it later with `GET /predictions/{prediction_id}`. Repeating `POST /predict` with the same `request_id` returns the stored prediction.",
+    "version": "1.2.0"
   },
   "paths": {
     "/health": {
@@ -25,7 +25,7 @@
     "/model-info": {
       "get": {
         "summary": "Model Info",
-        "description": "Risk thresholds, supported ranges and codes, test metrics.",
+        "description": "Risk thresholds, supported ranges and codes, test metrics, catalogue of recommended measures.",
         "operationId": "model_info_model_info_get",
         "responses": {
           "200": {
@@ -619,6 +619,14 @@
             "title": "Top Factors",
             "description": "Up to 3 fields that raise the risk most"
           },
+          "recommendations": {
+            "items": {
+              "$ref": "#/components/schemas/Recommendation"
+            },
+            "type": "array",
+            "title": "Recommendations",
+            "description": "Preventive measures, most urgent first; empty when unsupported or for predictions made before recommendations were added"
+          },
           "reasons": {
             "items": {
               "$ref": "#/components/schemas/Reason"
@@ -676,6 +684,88 @@
           "message"
         ],
         "title": "Reason"
+      },
+      "Recommendation": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "care_coordinator",
+              "follow_up_visit",
+              "medication_review",
+              "diabetes_specialist",
+              "follow_up_call",
+              "discharge_education"
+            ],
+            "title": "Code",
+            "description": "Measure type; full catalogue with cost and rules in GET /model-info"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action",
+            "description": "What to do (English)"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Priority",
+            "description": "Equals the patient's risk level; high-risk patients are handled first"
+          },
+          "deadline_days": {
+            "type": "integer",
+            "title": "Deadline Days",
+            "description": "Days after discharge to complete the measure; 0 = before discharge"
+          },
+          "cost": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Cost",
+            "description": "Relative cost of the measure"
+          },
+          "triggers": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "low_risk",
+                "medium_risk",
+                "high_risk",
+                "frequent_admissions",
+                "frequent_emergency",
+                "poor_glucose_control",
+                "elevated_glucose",
+                "medication_change",
+                "many_medications"
+              ]
+            },
+            "type": "array",
+            "title": "Triggers",
+            "description": "Why the measure was chosen: risk level and patient data"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "description": "Human-readable justification (English)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "action",
+          "priority",
+          "deadline_days",
+          "cost",
+          "triggers",
+          "reason"
+        ],
+        "title": "Recommendation"
       },
       "ValidationError": {
         "properties": {

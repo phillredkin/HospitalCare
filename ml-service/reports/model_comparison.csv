@@ -1,0 +1,14 @@
+,HistGradientBoosting,RandomForest,LogisticRegression
+roc_auc,0.6762,0.6721,0.6745
+pr_auc,0.2415,0.2245,0.2218
+brier,0.0951,0.0962,0.0959
+base_rate,0.1135,0.1135,0.1135
+top10pct_rate,0.2863,0.2559,0.2656
+accuracy_at_medium,0.6252,0.5801,0.6473
+precision_at_medium,0.1738,0.1672,0.1801
+recall_at_medium,0.6132,0.6783,0.5931
+f1_at_medium,0.2708,0.2683,0.2763
+accuracy_at_high,0.8654,0.8766,0.8559
+precision_at_high,0.3309,0.3377,0.2847
+recall_at_high,0.1823,0.0909,0.1783
+f1_at_high,0.2351,0.1433,0.2192

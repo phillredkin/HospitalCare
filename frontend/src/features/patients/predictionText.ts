@@ -76,6 +76,63 @@ export function predictionFactorValue(
   return value;
 }
 
+export interface PredictionRecommendation {
+  code: string;
+  action: string;
+  priority: string;
+  deadline_days: number;
+  cost: string;
+  triggers: string[];
+  reason: string;
+}
+
+const recommendationActions: Record<string, string> = {
+  care_coordinator:
+    'Prideliť koordinátora starostlivosti na 30 dní po prepustení (domáca návšteva, termíny, sociálna podpora)',
+  follow_up_visit: 'Objednať kontrolu u ošetrujúceho lekára',
+  medication_review: 'Kontrola zoznamu liekov farmaceutom pred prepustením',
+  diabetes_specialist: 'Odoslať k diabetológovi na úpravu liečby',
+  follow_up_call: 'Telefonický kontakt sestry: príznaky, glykémia a užívanie liekov',
+  discharge_education: 'Poučenie pri prepustení a edukácia o starostlivosti pri diabete',
+};
+
+const recommendationTriggers: Record<string, string> = {
+  high_risk: 'vysoké riziko opätovnej hospitalizácie',
+  medium_risk: 'stredné riziko opätovnej hospitalizácie',
+  frequent_admissions: '2 a viac hospitalizácií v roku pred prijatím',
+  frequent_emergency: '2 a viac urgentných návštev v roku pred prijatím',
+  poor_glucose_control: 'výrazne zvýšený HbA1c alebo glykémia',
+  elevated_glucose: 'zvýšený HbA1c alebo glykémia',
+  medication_change: 'zmena antidiabetickej liečby počas hospitalizácie',
+  many_medications: '20 a viac liekov počas hospitalizácie',
+};
+
+const costLabels: Record<string, string> = {
+  low: 'nízke náklady',
+  medium: 'stredné náklady',
+  high: 'vysoké náklady',
+};
+
+export function recommendationAction(recommendation: PredictionRecommendation): string {
+  return recommendationActions[recommendation.code] ?? recommendation.action;
+}
+
+export function recommendationDetails(recommendation: PredictionRecommendation): string {
+  const deadline =
+    recommendation.deadline_days === 0 ? 'Pred prepustením' : `Do ${recommendation.deadline_days} dní`;
+  return `${deadline} · ${costLabels[recommendation.cost] ?? recommendation.cost}`;
+}
+
+export function recommendationReason(recommendation: PredictionRecommendation): string {
+  if (recommendation.code === 'discharge_education') return 'Odporúča sa každému pacientovi pri prepustení.';
+  const reasons = recommendation.triggers
+    .map((trigger) => recommendationTriggers[trigger])
+    .filter(Boolean);
+  if (!reasons.length) return '';
+  const text = reasons.join(', ');
+  return `Dôvod: ${text}.`;
+}
+
 interface PredictionReason {
   field: string;
   code: string;
