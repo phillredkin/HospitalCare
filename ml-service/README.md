@@ -42,9 +42,10 @@ prediction instead of creating a new one.
 
 ## Recommended measures
 
-Every `status: "ok"` response has `recommendations`, most urgent first. Each item has a stable `code`
-(for translation in the frontend), `action`, `priority`, `deadline_days` (0 = before discharge), `cost`,
-`triggers` (codes) and `reason` (text). The rules are in `readmission/recommend.py`:
+New `status: "ok"` predictions include `recommendations`, ordered by deadline (higher relative cost first for
+ties). Each item has a stable `code` (for translation in the frontend), `action`, `priority`,
+`deadline_days` (0 = before discharge), `cost`, `triggers` (codes) and `reason` (text).
+The rules are in `readmission/recommend.py`:
 
 | `code` | Cost | When | Deadline |
 |---|---|---|---|
@@ -55,10 +56,13 @@ Every `status: "ok"` response has `recommendations`, most urgent first. Each ite
 | `diabetes_specialist` | medium | HbA1c >8 / glucose >300 at any risk; HbA1c >7 / glucose >200 at medium or high risk | 30 days, 14 days (high) |
 | `care_coordinator` | high | high risk and 2+ hospitalizations or emergency visits in the previous year | before discharge |
 
-Cheap measures are given broadly, expensive ones only where the risk justifies them; higher risk means shorter
-deadlines, and `priority` (= risk level) orders the work list across patients. `train.py` checks the rules on the
-test set and saves how many patients get each measure and how often they are actually readmitted
-(`test_recommendations` in `artifacts/model_meta.json`, `reports/recommendations.png`).
+The actions are informed by discharge-planning guidance; exact risk filters, some deadlines and the relative
+cost categories are project assumptions. `priority` repeats the patient's risk level. See the
+[medical evidence review](../docs/medical-recommendations.md) for sources, timing concerns and limitations.
+
+`train.py` reports how many test-set patients would receive each measure and their observed readmission rates
+(`test_recommendations` in `artifacts/model_meta.json`, `reports/recommendations.png`). This is descriptive
+analysis, not evidence that the measures prevented readmissions or reduced costs.
 
 `triggers` codes: `low_risk`, `medium_risk`, `high_risk`, `frequent_admissions`, `frequent_emergency`,
 `poor_glucose_control`, `elevated_glucose`, `medication_change`, `many_medications`.
