@@ -6,6 +6,9 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
+import secrets
+
+from fastapi import Header, Depends
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy import select, text
@@ -24,6 +27,22 @@ from .schemas import PredictRequest, PredictResponse, api_field_name
 ARTIFACTS = Path(os.environ.get("MODEL_DIR", Path(__file__).resolve().parent.parent / "artifacts"))
 state = {}
 
+def verify_api_key(
+    x_ml_api_key: str = Header(...)
+):
+    expected_key = os.environ.get("ML_API_KEY")
+
+    if not expected_key:
+        raise HTTPException(
+            status_code=500,
+            detail="ML API key is not configured"
+        )
+
+    if not secrets.compare_digest(x_ml_api_key, expected_key):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid API key"
+        )
 
 @asynccontextmanager
 async def lifespan(app):
@@ -76,7 +95,9 @@ def health():
     return body
 
 
-@app.get("/model-info",
+@app.get(
+    "/model-info",
+    dependencies=[Depends(verify_api_key)],
          description="Risk thresholds, supported ranges and codes, test metrics, catalogue of recommended measures.")
 def model_info():
     meta = state["meta"]
@@ -131,7 +152,8 @@ def make_prediction(request):
     return prediction
 
 
-@app.post("/predict", response_model=PredictResponse)
+@app.post("/predict", response_model=PredictResponse,
+          dependencies=[Depends(verify_api_key)])
 def predict(request: PredictRequest):
     by_request_id = select(Prediction).where(Prediction.request_id == request.request_id)
     with state["sessions"]() as session:
@@ -149,12 +171,19 @@ def predict(request: PredictRequest):
         return row
 
 
-@app.get("/predictions/{prediction_id}", response_model=PredictResponse,
-         description="Stored prediction by its id (the C# backend keeps only this id in PredictionLinks).",
-         responses={404: {"description": "Prediction not found"}})
+@app.get(
+    "/predictions/{prediction_id}",
+    response_model=PredictResponse,
+    dependencies=[Depends(verify_api_key)],
+)
 def get_prediction(prediction_id: uuid.UUID):
     with state["sessions"]() as session:
         row = session.get(Prediction, prediction_id)
+
     if row is None:
-        raise HTTPException(status_code=404, detail="Prediction not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Prediction not found"
+        )
+
     return row
