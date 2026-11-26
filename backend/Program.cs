@@ -68,11 +68,24 @@ builder.Services.AddScoped<HospitalizationService>();
 builder.Services.AddScoped<MedicationService>();
 builder.Services.AddScoped<ClinicalNoteService>();
 builder.Services.AddScoped<MlPredictionService>();
+
 builder.Services.AddHttpClient("MlService", client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["MlService:BaseUrl"] ?? "http://localhost:8000");
+    var baseUrl = builder.Configuration["MlService:BaseUrl"];
+    var apiKey = builder.Configuration["MlService:ApiKey"];
+
+    if (string.IsNullOrWhiteSpace(baseUrl))
+        throw new InvalidOperationException("MlService:BaseUrl is not configured.");
+
+    if (string.IsNullOrWhiteSpace(apiKey))
+        throw new InvalidOperationException("MlService:ApiKey is not configured.");
+
+    client.BaseAddress = new Uri(baseUrl.TrimEnd('/') + "/");
     client.Timeout = TimeSpan.FromSeconds(30);
+
+    client.DefaultRequestHeaders.Add("x-ml-api-key", apiKey);
 });
+
 
 builder.Services.AddRateLimiter(options =>
 {
